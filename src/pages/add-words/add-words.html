@@ -1,0 +1,87 @@
+<ion-header no-shadow>
+  <ion-navbar>
+    <ion-title>Add words</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <h2 class="text-center">English</h2>
+  <div class="editor-box">
+    <div class="view-editor-box">
+      <ion-textarea [(ngModel)]="firstWord"
+                    #firstTextarea
+                    class="full-height"></ion-textarea>
+      <div class="results"
+           (click)="setFocus('firstTextarea'); displayInput1=true"
+           *ngIf="!displayInput1">
+        <span *ngFor="let result of results1; let i = index"
+              (click)="setToInput(result, 'firstWord'); displayInput1=true">
+          {{result}}
+          <span *ngIf="i < results1.length-1">,</span>
+        </span>
+
+      </div>
+    </div>
+
+    <div class="control-editor-box">
+      <button (click)="startRecords('en-US')">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+
+      <button (click)="playText(firstWord, 'en-US')"
+              [disabled]="firstWord === ''">
+        <ion-icon name="megaphone"></ion-icon>
+      </button>
+
+      <button (click)="translate()"
+              [disabled]="firstWord === ''">
+        <ion-icon name="swap"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <h2 class="text-center">Russian</h2>
+  <div class="editor-box">
+    <div class="view-editor-box">
+      <ion-textarea [(ngModel)]="secondWord"
+                    #secondTextarea
+                    class="full-height"></ion-textarea>
+      <div class="results"
+           (click)="setFocus('secondTextarea'); displayInput2=true"
+           *ngIf="!displayInput2">
+        <span *ngFor="let result of results2; let i = index"
+              (click)="setToInput(result, 'secondWord'); displayInput2=true">
+          {{result}}
+        <span *ngIf="i < results2.length-1">,</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="control-editor-box">
+      <button (click)="startRecords('ru-RU')">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+
+      <button (click)="playText(secondWord, 'ru-RU')"
+              [disabled]="secondWord === ''">
+        <ion-icon name="megaphone"></ion-icon>
+      </button>
+
+      <button (click)="translate()"
+              [disabled]="secondWord === ''">
+        <ion-icon name="swap"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="button-box">
+    <button ion-button (click)="saveWords()"
+            [disabled]="firstWord === '' || secondWord === ''">Save
+    </button>
+  </div>
+
+  <div class="button-box">
+    <button ion-button (click)="getFromDB()">GET FROM DB</button>
+  </div>
+
+</ion-content>

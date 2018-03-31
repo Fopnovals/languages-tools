@@ -1,0 +1,8 @@
+{
+  "name": "languages-tools",
+  "app_id": "00270e1f",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

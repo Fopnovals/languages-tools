@@ -1,0 +1,53 @@
+.view-editor-box {
+  width: 85%;
+  border: 1px solid gray;
+  padding: 5px;
+  margin-right: 10px;
+  position: relative;
+  ion-input, ion-textarea {
+    font-size: 22px;
+  }
+}
+.editor-box {
+  display: flex;
+  padding: 5px;
+  margin: 10px 5px;
+}
+.control-editor-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 15%;
+  border: 1px solid gray;
+  button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+}
+.button-box {
+  text-align: center;
+}
+.text-center {
+  text-align: center;
+}
+.full-height .text-input {
+  height: 140px;
+  width: 100%;
+  margin: 0;
+}
+.results {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  span {
+    padding: 5px 5px 2px;
+    display: inline-block;
+    color: blue;
+    font-size: 22px;
+  }
+}
