@@ -107,7 +107,7 @@ export class AddWordsPage {
     let text = this[model];
     this.translateService.translate(text, from, to)
       .then((res: string) => {
-        if(model === 'firstWord') {
+        if (model === 'firstWord') {
           this.secondWord = res;
         } else {
           this.firstWord = res;
@@ -125,7 +125,26 @@ export class AddWordsPage {
   }
 
   saveWords() {
-
+    let first = {
+        word: this.firstWord,
+        language: 'en-US'
+      },
+      second = {
+        word: this.secondWord,
+        language: 'ru-RU'
+      };
+    this.sqlStorage.setACoupleWords(first, second)
+      .then((res) => {
+        if(res) {
+          this.firstWord = '';
+          this.secondWord = '';
+        }
+      }, (err) => {
+        console.log(err);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   getFromDB() {
