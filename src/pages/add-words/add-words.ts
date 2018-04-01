@@ -98,7 +98,7 @@ export class AddWordsPage {
   }
 
   setFocus(target) {
-    // this[target].setFocus();
+    this[target].nativeElement.focus();
   }
 
   translate() {

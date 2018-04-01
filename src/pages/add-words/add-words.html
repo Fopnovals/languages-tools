@@ -8,16 +8,17 @@
   <h2 class="text-center">English</h2>
   <div class="editor-box">
     <div class="view-editor-box">
-      <ion-textarea [(ngModel)]="firstWord"
-                    #firstTextarea
-                    class="full-height"></ion-textarea>
+      <textarea [(ngModel)]="firstWord"
+                #firstTextarea
+                class="full-height"></textarea>
       <div class="results"
            (click)="setFocus('firstTextarea'); displayInput1=true"
            *ngIf="!displayInput1">
         <span *ngFor="let result of results1; let i = index"
               (click)="setToInput(result, 'firstWord'); displayInput1=true">
           {{result}}
-          <span *ngIf="i < results1.length-1">,</span>
+          <span *ngIf="i < results1.length-1"
+                class="dot">,</span>
         </span>
 
       </div>
@@ -43,16 +44,17 @@
   <h2 class="text-center">Russian</h2>
   <div class="editor-box">
     <div class="view-editor-box">
-      <ion-textarea [(ngModel)]="secondWord"
-                    #secondTextarea
-                    class="full-height"></ion-textarea>
+      <textarea [(ngModel)]="secondWord"
+                #secondTextarea
+                class="full-height"></textarea>
       <div class="results"
            (click)="setFocus('secondTextarea'); displayInput2=true"
            *ngIf="!displayInput2">
         <span *ngFor="let result of results2; let i = index"
               (click)="setToInput(result, 'secondWord'); displayInput2=true">
           {{result}}
-        <span *ngIf="i < results2.length-1">,</span>
+        <span *ngIf="i < results2.length-1"
+              class="dot">,</span>
         </span>
       </div>
     </div>
