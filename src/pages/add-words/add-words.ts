@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
+import {TranslateService} from "../../services/translate.service";
 
 const recognitionOptions = {
   matches: 5
@@ -28,6 +29,7 @@ export class AddWordsPage {
 
   constructor(public navCtrl: NavController,
               private sqlStorage: SqlStorageProvider,
+              private translateService: TranslateService,
               private tts: TextToSpeech,
               private speechRecognition: SpeechRecognition,
               public navParams: NavParams) {
@@ -101,12 +103,24 @@ export class AddWordsPage {
     this[target].nativeElement.focus();
   }
 
-  translate() {
-    console.log('TRANSLATE');
+  googleTranslate(model, from, to) {
+    let text = this[model];
+    this.translateService.translate(text, from, to)
+      .then((res: string) => {
+        if(model === 'firstWord') {
+          this.secondWord = res;
+        } else {
+          this.firstWord = res;
+        }
+      }, (err) => {
+        console.log(err);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   setToInput(value, target) {
-    console.log(value);
     this[target] = value;
   }
 
