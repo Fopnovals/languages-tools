@@ -11,7 +11,8 @@ import {SQLite} from "@ionic-native/sqlite";
 import { SqlStorageProvider } from '../providers/sql-storage/sql-storage';
 import {HttpClientModule} from "@angular/common/http";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
-import {TranslateService} from "../services/translate.service";
+import {TranslateService} from "../_services/translate.service";
+import {TestWordsService} from "../_services/test.words.service";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {TranslateService} from "../services/translate.service";
     SQLite,
     SqlStorageProvider,
     TranslateService,
+    TestWordsService,
     TextToSpeech,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

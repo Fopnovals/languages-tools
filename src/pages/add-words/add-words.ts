@@ -3,7 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
-import {TranslateService} from "../../services/translate.service";
+import {TranslateService} from "../../_services/translate.service";
 
 const recognitionOptions = {
   matches: 5
