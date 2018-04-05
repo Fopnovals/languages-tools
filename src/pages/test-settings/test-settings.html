@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Test Settings</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Choose the language need to ask</ion-label>
+      <ion-select [(ngModel)]="testSettings.testLanguage"
+                  name="testLanguage"
+                  placeholder="Select">
+        <ion-option *ngFor="let language of languages" [value]="language">{{language.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-buttons class="modal-buttons">
+    <button ion-button
+            class="cancel-modal-button"
+            (click)="saveSettings()">Save</button>
+
+    <button ion-button
+            class="cancel-modal-button"
+            (click)="closePage()">Cancel</button>
+  </ion-buttons>
+</ion-content>
