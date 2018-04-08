@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ViewController} from "ionic-angular";
+import {IonicPage, NavParams, ViewController} from "ionic-angular";
 
 @IonicPage()
 @Component({
@@ -8,8 +8,17 @@ import {IonicPage, ViewController} from "ionic-angular";
 })
 export class ModalSimpleComponent {
 
-  constructor(private viewCtrl: ViewController) {
+  public text = '';
+  public hideAcceptButton = false;
 
+  constructor(private viewCtrl: ViewController,
+              private navParams: NavParams) {
+
+  }
+
+  ionViewDidLoad() {
+    this.text = this.navParams.get('text');
+    this.hideAcceptButton = this.navParams.get('hideAcceptButton');
   }
 
   closeModal() {

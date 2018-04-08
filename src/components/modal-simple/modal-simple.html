@@ -3,13 +3,14 @@
     <h2>Warning!!!</h2>
   </div>
   <div class="modal-body">
-    <p>Are you shure you want to remove the DATABASE?</p>
+    <p>{{text}}</p>
   </div>
   <ion-buttons class="modal-buttons">
     <button ion-button
             class="cancel-modal-button"
             (click)="closeModal()">Cancel</button>
     <button ion-button
+            *ngIf="!hideAcceptButton"
             class="continue-modal-button"
             (click)="acceptAction()">Accept</button>
   </ion-buttons>

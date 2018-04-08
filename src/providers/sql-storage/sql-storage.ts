@@ -3,6 +3,9 @@ import {Injectable} from '@angular/core';
 import {Platform} from "ionic-angular";
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {Observable} from "rxjs/Observable";
+import {Store} from "@ngrx/store";
+import * as fromRoot from '../../shared/redux/reducers';
+import {SetModulesNamesAction} from "../../shared/redux/actions/modules.actions";
 
 // const firstRecord = {
 //   names: [
@@ -17,11 +20,10 @@ import {Observable} from "rxjs/Observable";
 export class SqlStorageProvider {
   storage: any;
   DB_NAME = 'wordsStorage';
-  private modules$: Observable<any>;
-  private modules = [];
 
   constructor(public http: HttpClient,
               private platform: Platform,
+              private store: Store<fromRoot.State>,
               private sqLite: SQLite) {
     this.platform.ready().then(() => {
       this.sqLite.create({
@@ -75,6 +77,15 @@ export class SqlStorageProvider {
     });
   }
 
+  getWord(word) {
+    let sql = ('SELECT word from wordstable where word='+word);
+    return this.storage.executeSql(sql, {})
+      .then(response => {
+        return Promise.resolve(response);
+      })
+      .catch(error => Promise.reject(error));
+  }
+
   deleteDatabase() {
     this.sqLite.deleteDatabase({
       name: this.DB_NAME,
@@ -99,15 +110,12 @@ export class SqlStorageProvider {
     let sql = 'SELECT * FROM wordstable';
     this.storage.executeSql(sql, 'moduleName')
       .then(response => {
-        console.log('RESPONSE');
-        console.log(response);
-        let allRows = [];
+        let modules = [];
         for (let index = 0; index < response.rows.length; index++) {
-          console.log('-----------');
-          console.log(response.rows);
-          allRows.push(response.rows.item(index));
+          if(modules.indexOf(response.rows.item(index).moduleName) === -1)
+          modules.push(response.rows.item(index).moduleName);
         }
-        this.modules = allRows;
+        this.store.dispatch(new SetModulesNamesAction(modules));
       })
       .catch((error) => {
         console.log('ERROR');
@@ -118,13 +126,13 @@ export class SqlStorageProvider {
   setACoupleWords(first, second, moduleName) {
     first['associateWord'] = second.word;
     first['repeatedCounter'] = 0;
-    first['moduleName'] = moduleName || 'default';
+    first['moduleName'] = moduleName || 'Default';
     first['rightAnswersCounter'] = 0;
     first['wrongAnswersCounter'] = 0;
     first['commandWordState'] = 0;
     second['associateWord'] = first.word;
     second['repeatedCounter'] = 0;
-    second['moduleName'] = moduleName || 'default';
+    second['moduleName'] = moduleName || 'Default';
     second['rightAnswersCounter'] = 0;
     second['wrongAnswersCounter'] = 0;
     second['commandWordState'] = 0;

@@ -16,7 +16,10 @@ export class GeneralSettingsPage {
   }
 
   deleteDatabase() {
-    let modal = this.modalCtrl.create('ModalSimpleComponent');
+    let params = {
+      text: 'Are you shure you want to remove the DATABASE?'
+    };
+    let modal = this.modalCtrl.create('ModalSimpleComponent', params);
     modal.onDidDismiss(data => {
       if(data && data.accept) {
         this.sqlStorage.deleteDatabase();

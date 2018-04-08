@@ -13,6 +13,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {TranslateService} from "../_services/translate.service";
 import {TestWordsService} from "../_services/test.words.service";
+import {StoreModule} from "@ngrx/store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {reducers} from "../shared/redux/reducers";
 
 @NgModule({
   declarations: [
@@ -22,6 +25,8 @@ import {TestWordsService} from "../_services/test.words.service";
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

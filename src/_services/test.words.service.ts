@@ -13,6 +13,7 @@ export class TestWordsService {
     repeateWords: true,
     randomSequence: true
   };
+  private currentModuleName = '';
 
   constructor() {}
 
@@ -27,5 +28,13 @@ export class TestWordsService {
 
   getSettings() {
     return this.testSettings;
+  }
+
+  setCurrentModuleName(name) {
+    this.currentModuleName = name;
+  }
+
+  getCurrentModuleName() {
+    return this.currentModuleName;
   }
 }

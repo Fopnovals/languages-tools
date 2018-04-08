@@ -1,9 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {TranslateService} from "../../_services/translate.service";
+import {Store} from "@ngrx/store";
+import * as fromRoot from '../../shared/redux/reducers';
+import {Observable} from "rxjs/Observable";
+import {TestWordsService} from "../../_services/test.words.service";
 
 const recognitionOptions = {
   matches: 5
@@ -27,27 +31,35 @@ export class AddWordsPage {
   public displayInput1 = false;
   public displayInput2 = false;
   public showInputNewModuleBox = false;
-  public newModuleName: string;
+  public currentModuleName: string;
   public modules = [];
+  private modules$: Observable<any>;
 
   constructor(public navCtrl: NavController,
               private sqlStorage: SqlStorageProvider,
               private translateService: TranslateService,
+              private modalCtrl: ModalController,
+              private wordsService: TestWordsService,
               private tts: TextToSpeech,
-              private platform: Platform,
+              private store: Store<fromRoot.State>,
               private speechRecognition: SpeechRecognition,
               public navParams: NavParams) {
-    this.platform.ready().then(() => {
-      // this.getModules();
+    this.modules$ = this.store.select('modules');
+    this.modules$.subscribe((data) => {
+      if (data && data.modulesNames) {
+        this.modules = data.modulesNames;
+        if (this.modules.indexOf('Default') === -1) {
+          this.modules.push('Default');
+        }
+        if(this.wordsService.getCurrentModuleName() === '') {
+          this.wordsService.setCurrentModuleName('Default');
+          this.currentModuleName = 'Default';
+        } else {
+          this.currentModuleName = this.wordsService.getCurrentModuleName();
+        }
+      }
     });
   }
-
-  // getModules() {
-  //   this.sqlStorage.getModules().then((data) => {
-  //     console.log(data);
-  //     // this.modules = data || [];
-  //   });
-  // }
 
   ionViewDidLoad() {
     this.speechRecognition.hasPermission()
@@ -141,7 +153,16 @@ export class AddWordsPage {
 
   addModule() {
     this.showInputNewModuleBox = !this.showInputNewModuleBox;
-    this.modules.push(this.newModuleName);
+    if (this.modules.indexOf(this.currentModuleName) !== -1) {
+      let params = {
+        hideAcceptButton: true,
+        text: "You already have a module with some name. Please type an other name or add words to this module."
+      };
+      let modal = this.modalCtrl.create('ModalSimpleComponent', params);
+      modal.present();
+    } else {
+      this.modules.push(this.currentModuleName);
+    }
   }
 
   saveWords() {
@@ -153,7 +174,8 @@ export class AddWordsPage {
         word: this.secondWord,
         language: 'ru-RU'
       };
-    this.sqlStorage.setACoupleWords(first, second, this.newModuleName)
+    this.wordsService.setCurrentModuleName(this.currentModuleName);
+    this.sqlStorage.setACoupleWords(first, second, this.currentModuleName)
       .then((res) => {
         if (res) {
           this.firstWord = '';
