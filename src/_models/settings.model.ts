@@ -1,8 +1,14 @@
 export class TestSettingsModel {
   moduleName: any;
-  testLanguage: string;
+  testLanguage: LanguageModel;
   askAgain: boolean;
-  numbersOfWordsForTest: 'all';
+  numbersOfWordsForTest: string;
   repeateWords: boolean;
   randomSequence: boolean;
+}
+
+export class LanguageModel {
+  name: string;
+  shortName: string;
+  middleName: string;
 }

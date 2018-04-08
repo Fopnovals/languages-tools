@@ -13,3 +13,11 @@
 .modal-wrapper {
   background-color: rgba(0,0,0,0.6);
 }
+.two-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  button {
+    margin: 0 10px;
+  }
+}

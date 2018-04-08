@@ -7,24 +7,62 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list>
     <ion-item>
       <ion-label>Choose the language need to ask</ion-label>
       <ion-select [(ngModel)]="testSettings.testLanguage"
+                  [compareWith]="compareFn"
                   name="testLanguage"
                   placeholder="Select">
         <ion-option *ngFor="let language of languages" [value]="language">{{language.name}}</ion-option>
       </ion-select>
     </ion-item>
-  </ion-list>
-  <ion-buttons class="modal-buttons">
-    <button ion-button
-            class="cancel-modal-button"
-            (click)="saveSettings()">Save</button>
 
-    <button ion-button
-            class="cancel-modal-button"
-            (click)="closePage()">Cancel</button>
-  </ion-buttons>
+    <ion-item>
+      <ion-label>Test by module name</ion-label>
+      <ion-select [(ngModel)]="testSettings.moduleName"
+                  name="moduleName"
+                  placeholder="Select">
+        <ion-option *ngFor="let module of modules" [value]="module">{{module}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Numbers of words for test</ion-label>
+      <ion-select [(ngModel)]="testSettings.numbersOfWordsForTest"
+                  name="chooseNumbersOfWordsForTest"
+                  placeholder="Select">
+        <ion-option *ngFor="let number of chooseNumbersOfWordsForTest" [value]="number">{{number}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Ask again</ion-label>
+      <ion-checkbox [(ngModel)]="testSettings.askAgain"
+                    name="askAgain"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Repeate words</ion-label>
+      <ion-checkbox [(ngModel)]="testSettings.repeateWords"
+                    name="repeateWords"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Random sequence</ion-label>
+      <ion-checkbox [(ngModel)]="testSettings.randomSequence"
+                    name="randomSequence"></ion-checkbox>
+    </ion-item>
+
+    <ion-buttons class="two-buttons">
+      <button ion-button
+              (click)="saveSettings()">Save
+      </button>
+
+      <button ion-button
+              (click)="closePage()">Cancel
+      </button>
+    </ion-buttons>
+  </ion-list>
 </ion-content>

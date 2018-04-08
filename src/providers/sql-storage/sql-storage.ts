@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Platform} from "ionic-angular";
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
+import {Observable} from "rxjs/Observable";
 
 // const firstRecord = {
 //   names: [
@@ -16,15 +17,13 @@ import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 export class SqlStorageProvider {
   storage: any;
   DB_NAME = 'wordsStorage';
+  private modules$: Observable<any>;
+  private modules = [];
 
   constructor(public http: HttpClient,
               private platform: Platform,
               private sqLite: SQLite) {
     this.platform.ready().then(() => {
-      // this.sqLite.deleteDatabase({
-      //   name: this.DB_NAME,
-      //   location: 'default'
-      // });
       this.sqLite.create({
         name: this.DB_NAME,
         location: 'default'
@@ -37,7 +36,10 @@ export class SqlStorageProvider {
   }
 
   tryInit() {
-    this.query('CREATE TABLE IF NOT EXISTS wordstable (_id INTEGER PRIMARY KEY AUTOINCREMENT, word text, language text, associateWord text, repeatedCounter integer, rightAnswersCounter integer, wrongAnswersCounter integer, commandWordState integer)')
+    this.query('CREATE TABLE IF NOT EXISTS wordstable (_id INTEGER PRIMARY KEY AUTOINCREMENT, word text, moduleName text, language text, associateWord text, repeatedCounter integer, rightAnswersCounter integer, wrongAnswersCounter integer, commandWordState integer)')
+      .then(() => {
+        this.getModules();
+      })
       .catch(err => {
         alert('Unable to create initial storage tables' + err.tx + err.err);
       });
@@ -73,6 +75,13 @@ export class SqlStorageProvider {
     });
   }
 
+  deleteDatabase() {
+    this.sqLite.deleteDatabase({
+      name: this.DB_NAME,
+      location: 'default'
+    });
+  }
+
   getAll() {
     let sql = 'SELECT * FROM wordstable';
     return this.storage.executeSql(sql, [])
@@ -86,22 +95,42 @@ export class SqlStorageProvider {
       .catch(error => Promise.reject(error));
   }
 
-  setACoupleWords(first, second) {
+  getModules() {
+    let sql = 'SELECT * FROM wordstable';
+    this.storage.executeSql(sql, 'moduleName')
+      .then(response => {
+        console.log('RESPONSE');
+        console.log(response);
+        let allRows = [];
+        for (let index = 0; index < response.rows.length; index++) {
+          console.log('-----------');
+          console.log(response.rows);
+          allRows.push(response.rows.item(index));
+        }
+        this.modules = allRows;
+      })
+      .catch((error) => {
+        console.log('ERROR');
+        console.log(error);
+      });
+  }
+
+  setACoupleWords(first, second, moduleName) {
     first['associateWord'] = second.word;
     first['repeatedCounter'] = 0;
+    first['moduleName'] = moduleName || 'default';
     first['rightAnswersCounter'] = 0;
     first['wrongAnswersCounter'] = 0;
     first['commandWordState'] = 0;
     second['associateWord'] = first.word;
     second['repeatedCounter'] = 0;
+    second['moduleName'] = moduleName || 'default';
     second['rightAnswersCounter'] = 0;
     second['wrongAnswersCounter'] = 0;
     second['commandWordState'] = 0;
     return new Promise((resolve, reject) => {
       this.set(first).then((res) => {
-        console.log(res);
         this.set(second).then((res2) => {
-          console.log(res2);
           resolve(true);
         }, (err) => {
           reject(err);
@@ -113,13 +142,13 @@ export class SqlStorageProvider {
   }
 
   set(data: any) {
-    let sql = 'INSERT INTO wordstable (word, language, associateWord, repeatedCounter, rightAnswersCounter, wrongAnswersCounter, commandWordState) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    return this.storage.executeSql(sql, [data.word, data.language, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
+    let sql = 'INSERT INTO wordstable (word, moduleName, language, associateWord, repeatedCounter, rightAnswersCounter, wrongAnswersCounter, commandWordState) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
   }
 
   update(data: any) {
-    let sql = 'UPDATE wordstable SET word=?, language=?, associateWord=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter?, commandWordState WHERE id=?';
-    return this.storage.executeSql(sql, [data.word, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
+    let sql = 'UPDATE wordstable SET word=?, moduleName?, language=?, associateWord=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter?, commandWordState WHERE id=?';
+    return this.storage.executeSql(sql, [data.word, data.moduleName, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
   }
 
   remove(id: number): Promise<any> {

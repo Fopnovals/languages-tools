@@ -5,6 +5,35 @@
 </ion-header>
 
 <ion-content>
+  <h3 class="add-module-row"
+      *ngIf="!showInputNewModuleBox">Choose a module or
+    <button ion-button
+            class="add-module"
+            (click)="showInputNewModuleBox = !showInputNewModuleBox">
+      Add new
+    </button>
+  </h3>
+  <ion-item *ngIf="!showInputNewModuleBox">
+    <ion-label>Choose exists module</ion-label>
+    <ion-select [(ngModel)]="newModuleName"
+                name="module"
+                placeholder="Select">
+      <ion-option *ngFor="let module of modules" [value]="module">{{module}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-row *ngIf="showInputNewModuleBox">
+    <ion-col col-9>
+      <ion-input placeholder="Type name of module"
+                 [(ngModel)]="newModuleName"></ion-input>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button (click)="addModule()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+
   <h2 class="text-center">English</h2>
   <div class="editor-box">
     <div class="view-editor-box">

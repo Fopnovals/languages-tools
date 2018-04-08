@@ -1,14 +1,15 @@
 import {Injectable} from "@angular/core";
 import {TestSettingsModel} from "../_models/settings.model";
+import * as constants from '../shared/constants/constants';
 
 @Injectable()
 export class TestWordsService {
 
   private testSettings: TestSettingsModel = {
-    moduleName: 'all',
-    testLanguage: 'mixing',
+    moduleName: 'All',
+    testLanguage: constants['languages'][0],
     askAgain: false,
-    numbersOfWordsForTest: 'all',
+    numbersOfWordsForTest: 'All',
     repeateWords: true,
     randomSequence: true
   };
@@ -16,12 +17,12 @@ export class TestWordsService {
   constructor() {}
 
   setSettings(params) {
-    this.testSettings.moduleName = params.moduleName || 'all';
-    this.testSettings.testLanguage = params.testLanguage || 'mixing';
-    this.testSettings.askAgain = params.askAgain || false;
-    this.testSettings.numbersOfWordsForTest = params.numbersOfWordsForTest || 'all';
-    this.testSettings.repeateWords = params.repeateWords || true;
-    this.testSettings.randomSequence = params.randomSequence || true;
+    this.testSettings.moduleName = params.moduleName;
+    this.testSettings.testLanguage = params.testLanguage;
+    this.testSettings.askAgain = params.askAgain;
+    this.testSettings.numbersOfWordsForTest = params.numbersOfWordsForTest;
+    this.testSettings.repeateWords = params.repeateWords;
+    this.testSettings.randomSequence = params.randomSequence;
   }
 
   getSettings() {

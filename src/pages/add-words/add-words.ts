@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
@@ -26,14 +26,28 @@ export class AddWordsPage {
   public secondWord = '';
   public displayInput1 = false;
   public displayInput2 = false;
+  public showInputNewModuleBox = false;
+  public newModuleName: string;
+  public modules = [];
 
   constructor(public navCtrl: NavController,
               private sqlStorage: SqlStorageProvider,
               private translateService: TranslateService,
               private tts: TextToSpeech,
+              private platform: Platform,
               private speechRecognition: SpeechRecognition,
               public navParams: NavParams) {
+    this.platform.ready().then(() => {
+      // this.getModules();
+    });
   }
+
+  // getModules() {
+  //   this.sqlStorage.getModules().then((data) => {
+  //     console.log(data);
+  //     // this.modules = data || [];
+  //   });
+  // }
 
   ionViewDidLoad() {
     this.speechRecognition.hasPermission()
@@ -84,7 +98,6 @@ export class AddWordsPage {
           this.secondWord = '';
           this.displayInput2 = false;
         }
-        console.log();
         break;
     }
   }
@@ -108,8 +121,10 @@ export class AddWordsPage {
     this.translateService.translate(text, from, to)
       .then((res: string) => {
         if (model === 'firstWord') {
+          this.results2 = [];
           this.secondWord = res;
         } else {
+          this.results1 = [];
           this.firstWord = res;
         }
       }, (err) => {
@@ -124,6 +139,11 @@ export class AddWordsPage {
     this[target] = value;
   }
 
+  addModule() {
+    this.showInputNewModuleBox = !this.showInputNewModuleBox;
+    this.modules.push(this.newModuleName);
+  }
+
   saveWords() {
     let first = {
         word: this.firstWord,
@@ -133,9 +153,9 @@ export class AddWordsPage {
         word: this.secondWord,
         language: 'ru-RU'
       };
-    this.sqlStorage.setACoupleWords(first, second)
+    this.sqlStorage.setACoupleWords(first, second, this.newModuleName)
       .then((res) => {
-        if(res) {
+        if (res) {
           this.firstWord = '';
           this.secondWord = '';
         }
