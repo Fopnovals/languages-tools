@@ -16,6 +16,7 @@ import {TestWordsService} from "../_services/test.words.service";
 import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {reducers} from "../shared/redux/reducers";
+import {SharedService} from "../_services/shared.service";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {reducers} from "../shared/redux/reducers";
     SqlStorageProvider,
     TranslateService,
     TestWordsService,
+    SharedService,
     TextToSpeech,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

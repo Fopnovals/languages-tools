@@ -76,6 +76,20 @@ export class SqlStorageProvider {
       .catch(error => Promise.reject(error));
   }
 
+  getModule(moduleName) {
+    console.log(moduleName);
+    let sql = ('SELECT * FROM wordstable WHERE moduleName="'+moduleName+'"');
+    return this.storage.executeSql(sql, [])
+      .then(response => {
+        let allRows = [];
+        for (let index = 0; index < response.rows.length; index++) {
+          allRows.push(response.rows.item(index));
+        }
+        return Promise.resolve(allRows);
+      })
+      .catch(error => Promise.reject(error));
+  }
+
   deleteDatabase() {
     this.sqLite.deleteDatabase({
       name: this.DB_NAME,
