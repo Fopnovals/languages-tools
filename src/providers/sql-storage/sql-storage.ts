@@ -2,19 +2,9 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Platform} from "ionic-angular";
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
-import {Observable} from "rxjs/Observable";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../shared/redux/reducers';
 import {SetModulesNamesAction} from "../../shared/redux/actions/modules.actions";
-
-// const firstRecord = {
-//   names: [
-//     'word', 'language', 'associateWord', 'repeatedCounter', 'rightAnswersCounter', 'wrongAnswersCounter', 'commandWordState'
-//   ],
-//   values: [
-//     'Spoon', 'en', 12, 5, 2, 3, 0
-//   ]
-// };
 
 @Injectable()
 export class SqlStorageProvider {

@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>learning Settings</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Language which say of first</ion-label>
+      <ion-select [(ngModel)]="learningSettings.firstLanguage"
+                  [compareWith]="compareFn"
+                  name="firstLanguage"
+                  placeholder="Select">
+        <ion-option *ngFor="let language of languages" [value]="language">{{language.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Learning module name</ion-label>
+      <ion-select [(ngModel)]="learningSettings.moduleName"
+                  name="moduleName"
+                  placeholder="Select">
+        <ion-option *ngFor="let module of modules" [value]="module">{{module}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Pause between words</ion-label>
+      <ion-select [(ngModel)]="learningSettings.pauseBetweenWords"
+                  name="pauseBetweenWords"
+                  placeholder="Select">
+        <ion-option *ngFor="let pause of pauseBetweenWordsList" [value]="pause">{{pause}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Pause between a couple words</ion-label>
+      <ion-select [(ngModel)]="learningSettings.pauseBetweenACouple"
+                  name="pauseBetweenACouple"
+                  placeholder="Select">
+        <ion-option *ngFor="let pause of pauseBetweenWordsList" [value]="pause">{{pause}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Random learning</ion-label>
+      <ion-checkbox [(ngModel)]="learningSettings.randomSequence"
+                    name="randomSequence"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Repeate first word</ion-label>
+      <ion-checkbox [(ngModel)]="learningSettings.repeatFirstWord"
+                    name="repeatFirstWord"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Repeate second word</ion-label>
+      <ion-checkbox [(ngModel)]="learningSettings.repeatSecondWord"
+                    name="repeatSecondWord"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Wait while do repeate</ion-label>
+      <ion-checkbox [(ngModel)]="learningSettings.waitWhileUserSays"
+                    name="waitWhileUserSays"></ion-checkbox>
+    </ion-item>
+
+    <ion-buttons class="two-buttons">
+      <button ion-button
+              (click)="saveSettings()">Save
+      </button>
+
+      <button ion-button
+              (click)="closePage()">Cancel
+      </button>
+    </ion-buttons>
+  </ion-list>
+</ion-content>
