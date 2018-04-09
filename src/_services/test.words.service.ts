@@ -5,27 +5,56 @@ import * as constants from '../shared/constants/constants';
 @Injectable()
 export class TestWordsService {
 
-  private testSettings: TestSettingsModel = {
-    moduleName: 'Default',
-    testLanguage: constants['languages'][0],
-    askAgain: false,
-    numbersOfWordsForTest: 'All',
-    repeateWords: true,
-    randomSequence: true
-  };
-  private learningSettings: LearningSettingsModel = {
-    firstLanguage: constants['languages'][0],
-    moduleName: 'Default',
-    randomSequense: false,
-    pauseBetweenWords: 1,
-    pauseBetweenACouple: 3,
-    repeatFirstWord: false,
-    repeatSecondWord: false,
-    waitWhileUserSays: false
-  };
+  private testSettings: TestSettingsModel;
+  private learningSettings: LearningSettingsModel;
   private currentModuleName = '';
 
   constructor() {
+    let testSettings = this.getLocalStorage('testSettings');
+    let learningSettings = this.getLocalStorage('learningSettings');
+    let currentModuleName = this.getLocalStorage('currentModuleName');
+
+    if (!testSettings) {
+      this.testSettings = {
+        moduleName: 'Default',
+        testLanguage: constants['languages'][0],
+        askAgain: false,
+        numbersOfWordsForTest: 'All',
+        repeateWords: true,
+        randomSequence: true
+      }
+    } else {
+      this.testSettings = testSettings;
+    }
+
+    if (!learningSettings) {
+      this.learningSettings = {
+        firstLanguage: constants['languages'][0],
+        moduleName: 'Default',
+        randomSequense: false,
+        pauseBetweenWords: 1,
+        pauseBetweenACouple: 3,
+        repeatFirstWord: false,
+        repeatSecondWord: false,
+        waitWhileUserSays: false
+      }
+    } else {
+      this.learningSettings = learningSettings;
+    }
+
+    if(!this.currentModuleName) {
+      this.setCurrentModuleName('Default');
+    } else {
+      this.currentModuleName = currentModuleName;
+    }
+  }
+
+  setLocalStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  getLocalStorage(key): any {
+    return JSON.parse(localStorage.getItem(key));
   }
 
   setLearningSettings(params) {
@@ -37,6 +66,7 @@ export class TestWordsService {
     this.learningSettings.repeatFirstWord = params.repeatFirstWord;
     this.learningSettings.repeatSecondWord = params.repeatSecondWord;
     this.learningSettings.waitWhileUserSays = params.waitWhileUserSays;
+    this.setLocalStorage('learningSettings', this.learningSettings);
   }
 
   getLearningSettings() {
@@ -50,6 +80,7 @@ export class TestWordsService {
     this.testSettings.numbersOfWordsForTest = params.numbersOfWordsForTest;
     this.testSettings.repeateWords = params.repeateWords;
     this.testSettings.randomSequence = params.randomSequence;
+    this.setLocalStorage('testSettings', this.testSettings);
   }
 
   getSettings() {
@@ -58,6 +89,7 @@ export class TestWordsService {
 
   setCurrentModuleName(name) {
     this.currentModuleName = name;
+    this.setLocalStorage('currentModuleName', name);
   }
 
   getCurrentModuleName() {
