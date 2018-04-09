@@ -22,6 +22,7 @@ export class TestWordsPage {
   private showModal = false;
   public displayModalWord = '';
   public displayTestsWords = [];
+  private recognitionOptions = recognitionOptions;
 
   constructor(public navCtrl: NavController,
               private wordsService: TestWordsService,
@@ -67,9 +68,9 @@ export class TestWordsPage {
             }
             that.displayTestsWords.push([that.testsWords[counter].word]);
 
-            this.recognitionOptions['language'] = that.testsWords[counter].translateLanguage;
+            that.recognitionOptions['language'] = that.testsWords[counter].translateLanguage;
             let count = Math.floor(counter / 2);
-            this.speechRecognition.startListening(recognitionOptions)
+            that.speechRecognition.startListening(recognitionOptions)
               .subscribe(
                 (matches: Array<string>) => {
                     that.displayTestsWords[count].push(that.testsWords[counter].associateWord);
@@ -78,14 +79,13 @@ export class TestWordsPage {
                   } else {
                     that.displayTestsWords[count].push(false);
                   }
+                  counter++;
+                  return speak();
                 },
                 (onerror) => {
                   alert(onerror);
                 }
               );
-
-            counter++;
-            return speak();
           })
           .catch((reason: any) => console.log(reason));
       }

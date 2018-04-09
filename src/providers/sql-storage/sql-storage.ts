@@ -132,11 +132,11 @@ export class SqlStorageProvider {
     if(language === 'English') {
       return constants.languages.filter((el) => {
         return el['name'] === 'Russian';
-      })[0];
+      })[0].name;
     } else {
       return constants.languages.filter((el) => {
         return el['name'] === 'English';
-      })[0];
+      })[0].name;
     }
   }
 
