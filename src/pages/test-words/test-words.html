@@ -15,9 +15,22 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   <ion-list>
-
+    <ion-row *ngFor="let row of displayTestsWords">
+      <ion-col col-4>{{row[0]}}</ion-col>
+      <ion-col col-1>-</ion-col>
+      <ion-col col-4>{{row[1]}}</ion-col>
+      <ion-col col-3>{{row[2]}}</ion-col>
+    </ion-row>
+    <div class="button-box">
+      <div class="modal-word"
+           [ngClass]="{'display': showModal}">
+        <span>{{displayModalWord}}</span>
+      </div>
+      <button ion-button
+              (click)="start()">Start
+      </button>
+    </div>
   </ion-list>
 </ion-content>

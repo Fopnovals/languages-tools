@@ -65,7 +65,6 @@ export class LearningModePage {
               let count = Math.floor(counter/2);
               that.displayLearningWords[count].push(that.learningWords[counter].word);
             }
-            console.log(that.displayLearningWords);
             counter++;
             return speak();
           })

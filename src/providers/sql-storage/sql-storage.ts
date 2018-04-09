@@ -5,6 +5,7 @@ import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../shared/redux/reducers';
 import {SetModulesNamesAction} from "../../shared/redux/actions/modules.actions";
+import * as constants from '../../shared/constants/constants';
 
 @Injectable()
 export class SqlStorageProvider {
@@ -28,7 +29,7 @@ export class SqlStorageProvider {
   }
 
   tryInit() {
-    this.query('CREATE TABLE IF NOT EXISTS wordstable (_id INTEGER PRIMARY KEY AUTOINCREMENT, word text, moduleName text, language text, associateWord text, repeatedCounter integer, rightAnswersCounter integer, wrongAnswersCounter integer, commandWordState integer)')
+    this.query('CREATE TABLE IF NOT EXISTS wordstable (_id INTEGER PRIMARY KEY AUTOINCREMENT, word text, moduleName text, language text, translateLanguage text, associateWord text, repeatedCounter integer, rightAnswersCounter integer, wrongAnswersCounter integer, commandWordState integer)')
       .then(() => {
         this.getModules();
       })
@@ -127,6 +128,18 @@ export class SqlStorageProvider {
       });
   }
 
+  searchTranslateLanguage(language) {
+    if(language === 'English') {
+      return constants.languages.filter((el) => {
+        return el['name'] === 'Russian';
+      })[0];
+    } else {
+      return constants.languages.filter((el) => {
+        return el['name'] === 'English';
+      })[0];
+    }
+  }
+
   setACoupleWords(first, second, moduleName) {
     first['associateWord'] = second.word;
     first['repeatedCounter'] = 0;
@@ -134,12 +147,14 @@ export class SqlStorageProvider {
     first['rightAnswersCounter'] = 0;
     first['wrongAnswersCounter'] = 0;
     first['commandWordState'] = 0;
+    first['translateLanguage'] = this.searchTranslateLanguage(first['language']);
     second['associateWord'] = first.word;
     second['repeatedCounter'] = 0;
     second['moduleName'] = moduleName || 'Default';
     second['rightAnswersCounter'] = 0;
     second['wrongAnswersCounter'] = 0;
     second['commandWordState'] = 0;
+    second['translateLanguage'] = this.searchTranslateLanguage(second['language']);
     return new Promise((resolve, reject) => {
       this.set(first).then((res) => {
         this.set(second).then((res2) => {
@@ -154,13 +169,13 @@ export class SqlStorageProvider {
   }
 
   set(data: any) {
-    let sql = 'INSERT INTO wordstable (word, moduleName, language, associateWord, repeatedCounter, rightAnswersCounter, wrongAnswersCounter, commandWordState) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
+    let sql = 'INSERT INTO wordstable (word, moduleName, language, translateLanguage, associateWord, repeatedCounter, rightAnswersCounter, wrongAnswersCounter, commandWordState) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
   }
 
   update(data: any) {
-    let sql = 'UPDATE wordstable SET word=?, moduleName?, language=?, associateWord=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter?, commandWordState WHERE id=?';
-    return this.storage.executeSql(sql, [data.word, data.moduleName, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
+    let sql = 'UPDATE wordstable SET word=?, moduleName?, language=?, translateLanguage=?, associateWord=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter?, commandWordState WHERE id=?';
+    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
   }
 
   remove(id: number): Promise<any> {
