@@ -14,6 +14,9 @@ export class LearningModePage {
 
   private learningSettings: LearningSettingsModel;
   private learningWords = [];
+  public showModal = false;
+  public displayModalWord = '';
+  public displayLearningWords = [];
 
   constructor(public navCtrl: NavController,
               private wordsService: TestWordsService,
@@ -39,20 +42,30 @@ export class LearningModePage {
 
   test() {
     var counter = 0;
+    this.displayLearningWords = [];
     var that = this;
     speak();
     function speak() {
       if(counter < that.learningWords.length) {
-        console.log(counter);
+        that.displayModalWord = that.learningWords[counter].word;
+        that.showModal = true;
         let params = {
           text: that.learningWords[counter].word,
           rate: 1,
           locale: that.learningWords[counter].language
         };
-        console.log(params);
         that.tts.speak(params)
           .then(() => {
-            console.log('SUCCESS');
+            if(counter !== 0 || counter % 2 !== 0) {
+              that.showModal = false;
+            }
+            if(counter % 2 === 0 || counter === 0) {
+              that.displayLearningWords.push([that.learningWords[counter].word]);
+            } else {
+              let count = Math.floor(counter/2);
+              that.displayLearningWords[count].push(that.learningWords[counter].word);
+            }
+            console.log(that.displayLearningWords);
             counter++;
             return speak();
           })
