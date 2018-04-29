@@ -132,15 +132,17 @@ export class TestWordsPage {
         that.speak(counter, that.testsWords[counter].word, that.testsWords[counter].language)
           .then(() => {
             that.speech(counter, that.testsWords[counter].translateLanguage, that.testsWords[counter].translateWordId)
-              .then((res) => {
-
+              .then(() => {
                 counter++
+                goSpeak();
               }, (err) => {
                 console.log(err);
               });
           }, (err) => {
             console.log(err);
           });
+      } else {
+        that.showModal = false;
       }
     }
   }
@@ -168,18 +170,23 @@ export class TestWordsPage {
   }
 
   speech(counter, translateLanguage, translateWordId) {
-    console.log('SPEECH');
     let that = this;
     return new Promise((resolve, reject) => {
       that.recognitionOptions['language'] = translateLanguage;
-      console.log(that.recognitionOptions);
       that.speechRecognition.startListening(that.recognitionOptions)
         .subscribe(
           (matches: Array<string>) => {
-            console.log('ARRAY', matches);
             this.checkSpeechedWord(matches, translateWordId)
               .then((res) => {
-                console.log(res);
+                that.displayModalWord = res['word'];
+                that.displayTestsWords[counter].push(res['word']);
+                that.displayTestsWords[counter].push(res['rightAnswer']);
+                this.updateCounterInDataBase(that.testsWords[counter], res['rightAnswer'])
+                  .then(() => {
+                    resolve(true);
+                  }, (err) => {
+                    console.log(err);
+                  });
                 resolve(res);
               }, (err) => {
                 console.log(err);
@@ -194,16 +201,53 @@ export class TestWordsPage {
     });
   }
 
+  updateCounterInDataBase(el, val) {
+    return new Promise((resolve, reject) => {
+      var params = {
+        rate: 1,
+        locale: 'ru-RU',
+        text: 'Правильно'
+      };
+      if (val) {
+        el.rightAnswersCounter++;
+        el.repeatedCounter++;
+        params.text = 'Правильно';
+      } else {
+        el.wrongAnswersCounter++;
+        el.repeatedCounter++;
+        params.text = 'Не верно';
+      }
+      this.tts.speak(params)
+        .then(() => {
+          resolve(true);
+        })
+        .catch((reason: any) => {
+          console.log(reason);
+          reject(reason);
+        });
+      this.sqlStorage.updateRowById(el);
+    });
+
+  }
+
   checkSpeechedWord(arr, translateWordId) {
     return new Promise((resolve, reject) => {
       let existElement = this.module.filter((el) => {
-        return arr.indexOf(el.word) !== -1;
+        let hasWord = false;
+        arr.map((elem) => {
+          if (elem.toLowerCase() === el.word.toLowerCase()) {
+            hasWord = true;
+          }
+        });
+        if (hasWord) {
+          return el;
+        }
       });
-      console.log(existElement);
-      if(existElement[0] && existElement[0].id === translateWordId) {
+
+      if (existElement[0] && existElement[0].id === translateWordId) {
         resolve({word: existElement[0].word, rightAnswer: true});
       } else {
-        resolve({word: 'wrong answer', rightAnswer: false});
+        resolve({word: arr[0] || 'wrong answer', rightAnswer: false});
       }
     });
   }

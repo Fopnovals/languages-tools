@@ -190,7 +190,7 @@ export class SqlStorageProvider {
     return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.translateWordId, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
   }
 
-  updateRow(data: any) {
+  updateRowById(data: any) {
     let sql = 'UPDATE wordstable SET word=?, moduleName=?, language=?, translateLanguage=?, translateWordId=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter=?, commandWordState=? WHERE id=?';
     return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.translateWordId, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
   }
