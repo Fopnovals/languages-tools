@@ -5,6 +5,7 @@ import * as constants from "../../shared/constants/constants";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../shared/redux/reducers';
 import {Observable} from "rxjs/Observable";
+import {TestSettingsModel} from "../../_models/settings.model";
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ export class TestSettingsPage {
   public modules = [];
   private modules$: Observable<any>;
   public chooseNumbersOfWordsForTest = constants.chooseNumbersOfWordsForTest;
-  private testSettings: any;
+  private testSettings: TestSettingsModel;
 
   constructor(private navCtrl: NavController,
               private store: Store<fromRoot.State>,

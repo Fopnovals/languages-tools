@@ -46,6 +46,7 @@ export class TestWordsPage {
         this.module = res;
         this.sortByLanguage();
         this.checkAndSortBySortSettings();
+        this.splitByLength();
         this.test();
       }, (err) => {
         console.log(err);
@@ -116,6 +117,15 @@ export class TestWordsPage {
     }
   }
 
+  splitByLength() {
+    if(this.testsSettings.numbersOfWordsForTest === 'Module') {
+      return;
+    }
+    if(+this.testsSettings.numbersOfWordsForTest < this.testsWords.length) {
+      this.testsWords.length = +this.testsSettings.numbersOfWordsForTest;
+    }
+  }
+
   test() {
     var counter = 0;
     this.displayTestsWords = [];
@@ -148,7 +158,6 @@ export class TestWordsPage {
   }
 
   speak(counter, word, language) {
-    console.log('SPEAK');
     return new Promise((resolve, reject) => {
       let that = this;
       this.displayModalWord = word;
@@ -187,7 +196,6 @@ export class TestWordsPage {
                   }, (err) => {
                     console.log(err);
                   });
-                resolve(res);
               }, (err) => {
                 console.log(err);
                 reject(err);
@@ -203,20 +211,37 @@ export class TestWordsPage {
 
   updateCounterInDataBase(el, val) {
     return new Promise((resolve, reject) => {
-      var params = {
-        rate: 1,
-        locale: 'ru-RU',
-        text: 'Правильно'
-      };
       if (val) {
         el.rightAnswersCounter++;
         el.repeatedCounter++;
-        params.text = 'Правильно';
+        this.giveAnswer('Верно')
+          .then(() => {
+            resolve(true);
+          });
       } else {
         el.wrongAnswersCounter++;
         el.repeatedCounter++;
-        params.text = 'Не верно';
+        this.giveAnswer('Не верно')
+          .then(() => {
+            resolve(true);
+          });
       }
+
+      this.sqlStorage.updateRowById(el);
+    });
+  }
+
+  giveAnswer(text) {
+    return new Promise((resolve, reject) => {
+      if (!this.testsSettings.giveAnswer) {
+        resolve(true);
+        return;
+      }
+      const params = {
+        rate: 1,
+        locale: 'ru-RU',
+        text: text
+      };
       this.tts.speak(params)
         .then(() => {
           resolve(true);
@@ -225,9 +250,7 @@ export class TestWordsPage {
           console.log(reason);
           reject(reason);
         });
-      this.sqlStorage.updateRowById(el);
     });
-
   }
 
   checkSpeechedWord(arr, translateWordId) {
@@ -245,9 +268,29 @@ export class TestWordsPage {
       });
 
       if (existElement[0] && existElement[0].id === translateWordId) {
-        resolve({word: existElement[0].word, rightAnswer: true});
+        if(this.testsSettings.repeateWords) {
+          const params = {
+            rate: 1,
+            locale: existElement[0].language,
+            text: existElement[0].word
+          };
+          this.tts.speak(params)
+            .then(() => {
+              resolve({word: existElement[0].word, rightAnswer: true});
+            })
+            .catch((reason: any) => {
+              console.log(reason);
+              reject(reason);
+            });
+        } else {
+          resolve({word: existElement[0].word, rightAnswer: true});
+        }
       } else {
-        resolve({word: arr[0] || 'wrong answer', rightAnswer: false});
+        // if(this.testsSettings.askAgain) {
+        //
+        // } else {
+          resolve({word: arr[0] || 'wrong answer', rightAnswer: false});
+        // }
       }
     });
   }

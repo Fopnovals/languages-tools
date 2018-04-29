@@ -1,6 +1,7 @@
 export class TestSettingsModel {
   moduleName: any;
   testLanguage: LanguageModel;
+  giveAnswer: boolean;
   askAgain: boolean;
   numbersOfWordsForTest: string;
   repeateWords: boolean;

@@ -19,6 +19,7 @@ export class TestWordsService {
         moduleName: 'Default',
         testLanguage: constants['languages'][0],
         askAgain: false,
+        giveAnswer: true,
         numbersOfWordsForTest: 'All',
         repeateWords: true,
         sort: 'as is'
