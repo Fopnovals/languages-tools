@@ -76,7 +76,8 @@ export class AddWordsPage {
 
   startRecords(language) {
     this.recognitionOptions['language'] = language;
-
+    console.log('-----------');
+console.log(this.recognitionOptions);
     this.speechRecognition.startListening(recognitionOptions)
       .subscribe(
         (matches: Array<string>) => {

@@ -35,11 +35,11 @@ export class LearningSettingsPage {
 
   saveSettings() {
     this.testWordsService.setLearningSettings(this.learningSettings);
-    this.navCtrl.pop();
-  }
-
-  closePage() {
-    this.navCtrl.pop();
+    if(this.navCtrl.getPrevious()) {
+      this.navCtrl.pop();
+    } else {
+      this.navCtrl.setRoot('HomePage');
+    }
   }
 
   compareFn(e1, e2): boolean {

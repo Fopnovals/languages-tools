@@ -33,11 +33,11 @@ export class TestSettingsPage {
 
   saveSettings() {
     this.testWordsService.setSettings(this.testSettings);
-    this.navCtrl.pop();
-  }
-
-  closePage() {
-    this.navCtrl.pop();
+    if(this.navCtrl.getPrevious()) {
+      this.navCtrl.pop();
+    } else {
+      this.navCtrl.setRoot('HomePage');
+    }
   }
 
   compareFn(e1, e2): boolean {

@@ -79,7 +79,6 @@ export class LearningModePage {
   }
 
   checkAndSortBySortSettings() {
-    console.log(this.learningSettings.sort);
     switch (this.learningSettings.sort) {
       case 'random':
         for (let i = this.learningWords.length - 1; i > 0; i--) {

@@ -1,9 +1,17 @@
 <ion-header>
   <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>learning Settings</ion-title>
+    <ion-buttons end>
+      <button ion-button right (click)="saveSettings()">
+        <ion-icon name="save"></ion-icon>
+        Save
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 
 <ion-content>
   <ion-list>
@@ -29,7 +37,8 @@
     <ion-item-divider>
       <ion-label>Pause between words</ion-label>
       <ion-badge color="secondary"
-                 item-end>{{learningSettings.pauseBetweenWords}}</ion-badge>
+                 item-end>{{learningSettings.pauseBetweenWords}}
+      </ion-badge>
     </ion-item-divider>
 
     <ion-item>
@@ -46,7 +55,8 @@
     <ion-item-divider>
       <ion-label>Pause between a couple words</ion-label>
       <ion-badge color="secondary"
-                 item-end>{{learningSettings.pauseBetweenACouple}}</ion-badge>
+                 item-end>{{learningSettings.pauseBetweenACouple}}
+      </ion-badge>
     </ion-item-divider>
 
     <ion-item>
@@ -63,7 +73,7 @@
     <ion-item-divider>
       <ion-label>Sorting</ion-label>
     </ion-item-divider>
-    <ion-list radio-group [(ngModel)]="learningSettings.sort">
+    <div radio-group [(ngModel)]="learningSettings.sort">
       <ion-item>
         <ion-label>As is</ion-label>
         <ion-radio value="as is"></ion-radio>
@@ -83,34 +93,6 @@
         <ion-label>Random learning</ion-label>
         <ion-radio value="random"></ion-radio>
       </ion-item>
-    </ion-list>
-
-    <ion-item>
-      <ion-label>Repeate first word</ion-label>
-      <ion-checkbox [(ngModel)]="learningSettings.repeatFirstWord"
-                    name="repeatFirstWord"></ion-checkbox>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Repeate second word</ion-label>
-      <ion-checkbox [(ngModel)]="learningSettings.repeatSecondWord"
-                    name="repeatSecondWord"></ion-checkbox>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Wait while do repeate</ion-label>
-      <ion-checkbox [(ngModel)]="learningSettings.waitWhileUserSays"
-                    name="waitWhileUserSays"></ion-checkbox>
-    </ion-item>
-
-    <ion-buttons class="two-buttons">
-      <button ion-button
-              (click)="saveSettings()">Save
-      </button>
-
-      <button ion-button
-              (click)="closePage()">Cancel
-      </button>
-    </ion-buttons>
+    </div>
   </ion-list>
 </ion-content>

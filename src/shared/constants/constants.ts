@@ -17,7 +17,6 @@ export const languages = [
 ];
 
 export const chooseNumbersOfWordsForTest = [
-  'All',
   'Module',
   '10',
   '20',
