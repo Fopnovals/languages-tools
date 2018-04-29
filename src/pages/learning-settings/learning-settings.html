@@ -26,29 +26,64 @@
       </ion-select>
     </ion-item>
 
-    <ion-item>
+    <ion-item-divider>
       <ion-label>Pause between words</ion-label>
-      <ion-select [(ngModel)]="learningSettings.pauseBetweenWords"
-                  name="pauseBetweenWords"
-                  placeholder="Select">
-        <ion-option *ngFor="let pause of pauseBetweenWordsList" [value]="pause">{{pause}}</ion-option>
-      </ion-select>
-    </ion-item>
+      <ion-badge color="secondary"
+                 item-end>{{learningSettings.pauseBetweenWords}}</ion-badge>
+    </ion-item-divider>
 
     <ion-item>
+      <ion-range [min]="0"
+                 [max]="8"
+                 [snaps]="true"
+                 [step]="1"
+                 [(ngModel)]="learningSettings.pauseBetweenWords">
+        <ion-label range-left>0</ion-label>
+        <ion-label range-right>8</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-item-divider>
       <ion-label>Pause between a couple words</ion-label>
-      <ion-select [(ngModel)]="learningSettings.pauseBetweenACouple"
-                  name="pauseBetweenACouple"
-                  placeholder="Select">
-        <ion-option *ngFor="let pause of pauseBetweenWordsList" [value]="pause">{{pause}}</ion-option>
-      </ion-select>
-    </ion-item>
+      <ion-badge color="secondary"
+                 item-end>{{learningSettings.pauseBetweenACouple}}</ion-badge>
+    </ion-item-divider>
 
     <ion-item>
-      <ion-label>Random learning</ion-label>
-      <ion-checkbox [(ngModel)]="learningSettings.randomSequence"
-                    name="randomSequence"></ion-checkbox>
+      <ion-range [min]="0"
+                 [max]="8"
+                 [snaps]="true"
+                 [step]="1"
+                 [(ngModel)]="learningSettings.pauseBetweenACouple">
+        <ion-label range-left>0</ion-label>
+        <ion-label range-right>8</ion-label>
+      </ion-range>
     </ion-item>
+
+    <ion-item-divider>
+      <ion-label>Sorting</ion-label>
+    </ion-item-divider>
+    <ion-list radio-group [(ngModel)]="learningSettings.sort">
+      <ion-item>
+        <ion-label>As is</ion-label>
+        <ion-radio value="as is"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Alphabetizing</ion-label>
+        <ion-radio value="alphabetizing"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Reverse alphabetizing</ion-label>
+        <ion-radio value="reverse"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Random learning</ion-label>
+        <ion-radio value="random"></ion-radio>
+      </ion-item>
+    </ion-list>
 
     <ion-item>
       <ion-label>Repeate first word</ion-label>

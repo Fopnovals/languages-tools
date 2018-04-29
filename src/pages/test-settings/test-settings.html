@@ -47,11 +47,30 @@
                     name="repeateWords"></ion-checkbox>
     </ion-item>
 
-    <ion-item>
-      <ion-label>Random sequence</ion-label>
-      <ion-checkbox [(ngModel)]="testSettings.randomSequence"
-                    name="randomSequence"></ion-checkbox>
-    </ion-item>
+    <ion-item-divider>
+      <ion-label>Sorting</ion-label>
+    </ion-item-divider>
+    <ion-list radio-group [(ngModel)]="learningSettings.sort">
+      <ion-item>
+        <ion-label>As is</ion-label>
+        <ion-radio value="as is"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Alphabetizing</ion-label>
+        <ion-radio value="alphabetizing"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Reverse alphabetizing</ion-label>
+        <ion-radio value="reverse"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Random learning</ion-label>
+        <ion-radio value="random"></ion-radio>
+      </ion-item>
+    </ion-list>
 
     <ion-buttons class="two-buttons">
       <button ion-button

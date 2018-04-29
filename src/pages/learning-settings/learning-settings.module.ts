@@ -7,7 +7,7 @@ import { LearningSettingsPage } from './learning-settings';
     LearningSettingsPage,
   ],
   imports: [
-    IonicPageModule.forChild(LearningSettingsPage),
+    IonicPageModule.forChild(LearningSettingsPage)
   ],
 })
 export class LearningSettingsPageModule {}

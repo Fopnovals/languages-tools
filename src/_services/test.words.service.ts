@@ -21,7 +21,7 @@ export class TestWordsService {
         askAgain: false,
         numbersOfWordsForTest: 'All',
         repeateWords: true,
-        randomSequence: true
+        sort: 'as is'
       }
     } else {
       this.testSettings = testSettings;
@@ -31,7 +31,7 @@ export class TestWordsService {
       this.learningSettings = {
         firstLanguage: constants['languages'][0],
         moduleName: 'Default',
-        randomSequense: false,
+        sort: 'as is',
         pauseBetweenWords: 1,
         pauseBetweenACouple: 3,
         repeatFirstWord: false,
@@ -60,7 +60,7 @@ export class TestWordsService {
   setLearningSettings(params) {
     this.learningSettings.firstLanguage = params.firstLanguage;
     this.learningSettings.moduleName = params.moduleName;
-    this.learningSettings.randomSequense = params.randomSequense;
+    this.learningSettings.sort = params.sort;
     this.learningSettings.pauseBetweenWords = params.pauseBetweenWords;
     this.learningSettings.pauseBetweenACouple = params.pauseBetweenACouple;
     this.learningSettings.repeatFirstWord = params.repeatFirstWord;
@@ -79,7 +79,7 @@ export class TestWordsService {
     this.testSettings.askAgain = params.askAgain;
     this.testSettings.numbersOfWordsForTest = params.numbersOfWordsForTest;
     this.testSettings.repeateWords = params.repeateWords;
-    this.testSettings.randomSequence = params.randomSequence;
+    this.testSettings.sort = params.sort;
     this.setLocalStorage('testSettings', this.testSettings);
   }
 

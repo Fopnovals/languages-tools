@@ -18,10 +18,13 @@
 
 <ion-content>
   <ion-list>
-    <ion-row *ngFor="let row of displayLearningWords">
+    <ion-row padding-horizontal
+             *ngFor="let row of displayLearningWords">
       <ion-col col-5>{{row[0]}}</ion-col>
-      <ion-col col-2>-</ion-col>
-      <ion-col col-5>{{row[1]}}</ion-col>
+      <ion-col col-2
+               text-center>-</ion-col>
+      <ion-col col-5
+               text-right>{{row[1]}}</ion-col>
     </ion-row>
     <div class="button-box">
       <div class="modal-word"

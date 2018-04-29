@@ -29,7 +29,7 @@ export class SqlStorageProvider {
   }
 
   tryInit() {
-    this.query('CREATE TABLE IF NOT EXISTS wordstable (_id INTEGER PRIMARY KEY AUTOINCREMENT, word text, moduleName text, language text, translateLanguage text, associateWord text, repeatedCounter integer, rightAnswersCounter integer, wrongAnswersCounter integer, commandWordState integer)')
+    this.query('CREATE TABLE IF NOT EXISTS wordstable (id INTEGER PRIMARY KEY AUTOINCREMENT, word text, moduleName text, language text, translateLanguage text, translateWordId integer, repeatedCounter integer, rightAnswersCounter integer, wrongAnswersCounter integer, commandWordState integer)')
       .then(() => {
         this.getModules();
       })
@@ -69,16 +69,24 @@ export class SqlStorageProvider {
   }
 
   getWord(word) {
-    let sql = ('SELECT word from wordstable where word='+word);
+    let sql = ('SELECT * from wordstable where word="'+word+'"');
     return this.storage.executeSql(sql, {})
       .then(response => {
-        return Promise.resolve(response);
+        return Promise.resolve(response.rows.item(0));
+      })
+      .catch(error => Promise.reject(error));
+  }
+
+  getTranslateWordById(id) {
+    let sql = ('SELECT * from wordstable where translateWordId="'+id+'"');
+    return this.storage.executeSql(sql, {})
+      .then(response => {
+        return Promise.resolve(response.rows.item(0));
       })
       .catch(error => Promise.reject(error));
   }
 
   getModule(moduleName) {
-    console.log(moduleName);
     let sql = ('SELECT * FROM wordstable WHERE moduleName="'+moduleName+'"');
     return this.storage.executeSql(sql, [])
       .then(response => {
@@ -95,6 +103,8 @@ export class SqlStorageProvider {
     this.sqLite.deleteDatabase({
       name: this.DB_NAME,
       location: 'default'
+    }).then(() => {
+      this.tryInit();
     });
   }
 
@@ -129,26 +139,24 @@ export class SqlStorageProvider {
   }
 
   searchTranslateLanguage(language) {
-    if(language === 'English') {
+    if(language === 'en-US') {
       return constants.languages.filter((el) => {
-        return el['name'] === 'Russian';
-      })[0].name;
+        return el['middleName'] === 'ru-RU';
+      })[0].middleName;
     } else {
       return constants.languages.filter((el) => {
-        return el['name'] === 'English';
-      })[0].name;
+        return el['middleName'] === 'en-US';
+      })[0].middleName;
     }
   }
 
   setACoupleWords(first, second, moduleName) {
-    first['associateWord'] = second.word;
     first['repeatedCounter'] = 0;
     first['moduleName'] = moduleName || 'Default';
     first['rightAnswersCounter'] = 0;
     first['wrongAnswersCounter'] = 0;
     first['commandWordState'] = 0;
     first['translateLanguage'] = this.searchTranslateLanguage(first['language']);
-    second['associateWord'] = first.word;
     second['repeatedCounter'] = 0;
     second['moduleName'] = moduleName || 'Default';
     second['rightAnswersCounter'] = 0;
@@ -157,8 +165,17 @@ export class SqlStorageProvider {
     second['translateLanguage'] = this.searchTranslateLanguage(second['language']);
     return new Promise((resolve, reject) => {
       this.set(first).then((res) => {
+        second['translateWordId'] = res.insertId;
         this.set(second).then((res2) => {
-          resolve(true);
+          let updatedRow = {
+            id: second['translateWordId'],
+            translateWordId: res2.insertId
+          };
+          this.updateTranslateWordId(updatedRow).then(() => {
+            resolve(true);
+          }, (err) => {
+            reject(err);
+          });
         }, (err) => {
           reject(err);
         });
@@ -169,13 +186,18 @@ export class SqlStorageProvider {
   }
 
   set(data: any) {
-    let sql = 'INSERT INTO wordstable (word, moduleName, language, translateLanguage, associateWord, repeatedCounter, rightAnswersCounter, wrongAnswersCounter, commandWordState) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
+    let sql = 'INSERT INTO wordstable (word, moduleName, language, translateLanguage, translateWordId, repeatedCounter, rightAnswersCounter, wrongAnswersCounter, commandWordState) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.translateWordId, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState]);
   }
 
-  update(data: any) {
-    let sql = 'UPDATE wordstable SET word=?, moduleName?, language=?, translateLanguage=?, associateWord=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter?, commandWordState WHERE id=?';
-    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.associateWord, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
+  updateRow(data: any) {
+    let sql = 'UPDATE wordstable SET word=?, moduleName=?, language=?, translateLanguage=?, translateWordId=?, repeatedCounter=?, rightAnswersCounter=?, wrongAnswersCounter=?, commandWordState=? WHERE id=?';
+    return this.storage.executeSql(sql, [data.word, data.moduleName, data.language, data.translateLanguage, data.translateWordId, data.repeatedCounter, data.rightAnswersCounter, data.wrongAnswersCounter, data.commandWordState, data.id]);
+  }
+
+  updateTranslateWordId(data: any) {
+    let sql = 'UPDATE wordstable SET translateWordId=? WHERE id=?';
+    return this.storage.executeSql(sql, [data.translateWordId, data.id]);
   }
 
   remove(id: number): Promise<any> {
