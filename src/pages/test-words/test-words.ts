@@ -268,6 +268,7 @@ export class TestWordsPage {
       });
 
       if (existElement[0] && existElement[0].id === translateWordId) {
+        this.displayModalWord = existElement[0].word;
         if(this.testsSettings.repeateWords) {
           const params = {
             rate: 1,
