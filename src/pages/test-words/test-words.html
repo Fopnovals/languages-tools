@@ -18,16 +18,13 @@
 <ion-content>
   <ion-list>
     <ion-row padding-horizontal
+             [ngClass]="{'right': row[2], 'wrong': row[2] == false}"
              *ngFor="let row of displayTestsWords">
-      <ion-col col-4>{{row[0]}}</ion-col>
-      <ion-col col-1
-               text-center>-</ion-col>
-      <ion-col col-4
-               text-right>{{row[1]}}</ion-col>
-      <ion-col col-1
-               text-center>-</ion-col>
+      <ion-col col-5>{{row[0]}}</ion-col>
       <ion-col col-2
-               text-right>{{row[2]}}</ion-col>
+               text-center>-</ion-col>
+      <ion-col col-5
+               text-right>{{row[1]}}</ion-col>
     </ion-row>
     <div class="button-box">
       <div class="modal-word"

@@ -17,6 +17,8 @@ import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {reducers} from "../shared/redux/reducers";
 import {SharedService} from "../_services/shared.service";
+import {Insomnia} from "@ionic-native/insomnia";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import {SharedService} from "../_services/shared.service";
     HttpClientModule,
     IonicModule.forRoot(MyApp),
     StoreModule.forRoot(reducers),
+    IonicStorageModule.forRoot(),
     StoreDevtoolsModule.instrument()
   ],
   bootstrap: [IonicApp],
@@ -37,6 +40,7 @@ import {SharedService} from "../_services/shared.service";
     StatusBar,
     SpeechRecognition,
     SQLite,
+    Insomnia,
     SqlStorageProvider,
     TranslateService,
     TestWordsService,

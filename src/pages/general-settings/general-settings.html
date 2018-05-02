@@ -12,5 +12,12 @@
   <ion-list>
     <button ion-item
     (click)="deleteDatabase()">Delete database</button>
+
+    <ion-item>
+      <ion-label>Prevent the screen asleep</ion-label>
+      <ion-toggle [(ngModel)]="!settings.canSleep"
+                  (ionChange)="changeSleepAllowing()"
+                  name="canSleep"></ion-toggle>
+    </ion-item>
   </ion-list>
 </ion-content>

@@ -1,6 +1,7 @@
 export const pages = [
   { title: 'Home', component: 'HomePage' },
   { title: 'Add words', component: 'AddWordsPage' },
+  { title: 'Edit module', component: 'EditModulePage' },
   { title: 'Learning mode', component: 'LearningModePage' },
   { title: 'Learning settings', component: 'LearningSettingsPage' },
   { title: 'Test words', component: 'TestWordsPage' },

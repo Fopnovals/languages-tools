@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>Edit module</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Choose module name</ion-label>
+    <ion-select [(ngModel)]="moduleName"
+                name="moduleName"
+                (ionChange)="getWordsByModuleName()"
+                placeholder="Select">
+      <ion-option *ngFor="let module of modules" [value]="module">{{module}}</ion-option>
+    </ion-select>
+  </ion-item>
+<ion-list padding>
+  <div *ngIf="words.length">
+    <ion-row *ngFor="let row of words">
+      <ion-col col-5>{{row.word}}</ion-col>
+
+      <ion-col col-2>
+        <ion-icon name="trash"
+                  (click)="deleteWord(row)"></ion-icon>
+      </ion-col>
+
+      <ion-col col-2>
+        <ion-icon name="create" (click)="editWord(row.id)"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-list>
+</ion-content>

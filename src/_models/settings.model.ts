@@ -24,3 +24,7 @@ export class LearningSettingsModel {
   waitWhileUserSays: boolean;
   sort: string;
 }
+
+export class GeneralSettingsModel {
+  canSleep: boolean
+}

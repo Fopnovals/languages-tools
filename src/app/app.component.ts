@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as constants from '../pages/pages';
 import {SqlStorageProvider} from "../providers/sql-storage/sql-storage";
+import {SharedService} from "../_services/shared.service";
 
 @Component({
   templateUrl: 'app.html'
@@ -17,6 +18,7 @@ export class MyApp {
   constructor(public platform: Platform,
               public statusBar: StatusBar,
               private sqlStorage: SqlStorageProvider,
+              private sharedService: SharedService,
               public splashScreen: SplashScreen) {
     this.initializeApp();
     this.pages = constants.pages;
@@ -26,6 +28,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.sharedService.allowSleep();
     });
   }
 
