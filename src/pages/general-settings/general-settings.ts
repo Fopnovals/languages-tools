@@ -3,6 +3,7 @@ import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angula
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {GeneralSettingsModel} from "../../_models/settings.model";
 import {SharedService} from "../../_services/shared.service";
+import {Storage} from "@ionic/storage";
 
 @IonicPage()
 @Component({
@@ -16,15 +17,21 @@ export class GeneralSettingsPage {
               private sqlStorage: SqlStorageProvider,
               private modalCtrl: ModalController,
               private sharedService: SharedService,
+              private storage: Storage,
               public navParams: NavParams) {
     this.settings = new GeneralSettingsModel();
-    this.sharedService.getCanSleepState()
-      .then((res) => {
+    this.storage.get('canSleep').then((res) => {
+      if (res == undefined) {
+        this.settings.canSleep = false;
+        this.storage.set('canSleep', false);
+      } else {
         this.settings.canSleep = res;
-      });
+      }
+    });
   }
 
   changeSleepAllowing() {
+    this.storage.set('canSleep', this.settings.canSleep);
     this.sharedService.allowSleep(this.settings.canSleep);
   }
 

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../shared/redux/reducers';
 import * as constants from "../../shared/constants/constants";
@@ -14,6 +14,7 @@ import {TestWordsService} from "../../_services/test.words.service";
 })
 export class LearningSettingsPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
   public languages = constants.languages;
   public pauseBetweenWordsList = constants.pauseBetweenWordsList;
   public modules = [];
@@ -27,19 +28,21 @@ export class LearningSettingsPage {
     this.learningSettings = this.testWordsService.getLearningSettings();
     this.modules$ = this.store.select('modules');
     this.modules$.subscribe((data) => {
-      if(data && data.modulesNames) {
+      if (data && data.modulesNames) {
         this.modules = data.modulesNames;
       }
     });
   }
 
+  ionViewDidLoad() {
+    this.navBar.backButtonClick = (e:UIEvent)=>{
+      this.navCtrl.pop();
+    }
+  }
+
   saveSettings() {
     this.testWordsService.setLearningSettings(this.learningSettings);
-    if(this.navCtrl.getPrevious()) {
-      this.navCtrl.pop();
-    } else {
-      this.navCtrl.setRoot('HomePage');
-    }
+    this.navCtrl.pop();
   }
 
   compareFn(e1, e2): boolean {

@@ -15,7 +15,9 @@
 
 </ion-menu>
 
-<ion-fab right bottom>
+<ion-fab right
+         bottom
+         *ngIf="displayAddWordsFab">
   <button ion-fab (click)="goToPage('AddWordsPage')">
     <ion-icon name="add"></ion-icon>
   </button>

@@ -4,6 +4,7 @@ import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {LearningSettingsModel} from "../../_models/settings.model";
 import {TestWordsService} from "../../_services/test.words.service";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
+import {SharedService} from "../../_services/shared.service";
 
 @IonicPage()
 @Component({
@@ -20,10 +21,12 @@ export class LearningModePage {
   private sortedEnglishWords = [];
   private sortedRussianWords = [];
   private module = [];
+  public learningStarted = false;
 
   constructor(public navCtrl: NavController,
               private wordsService: TestWordsService,
               private sqlStorage: SqlStorageProvider,
+              private sharedService: SharedService,
               private tts: TextToSpeech,
               public navParams: NavParams) {
   }
@@ -33,6 +36,8 @@ export class LearningModePage {
   }
 
   start() {
+    this.sharedService.changeFabAddWordsState(false);
+    this.learningStarted = true;
     this.learningSettings = this.wordsService.getLearningSettings();
     this.sqlStorage.getModule(this.learningSettings.moduleName)
       .then((res) => {
@@ -166,5 +171,11 @@ export class LearningModePage {
           reject(reason);
         });
     });
+  }
+
+  stop() {
+    console.log('STOP');
+    this.sharedService.changeFabAddWordsState(true);
+    this.learningStarted = false;
   }
 }

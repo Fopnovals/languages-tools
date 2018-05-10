@@ -1,7 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title text-center>Edit module</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -17,7 +20,7 @@
 <ion-list padding>
   <div *ngIf="words.length">
     <ion-row *ngFor="let row of words">
-      <ion-col col-5>{{row.word}}</ion-col>
+      <ion-col col-8>{{row.word}}</ion-col>
 
       <ion-col col-2>
         <ion-icon name="trash"
@@ -25,7 +28,8 @@
       </ion-col>
 
       <ion-col col-2>
-        <ion-icon name="create" (click)="editWord(row.id)"></ion-icon>
+        <ion-icon name="create"
+                  (click)="editWord(row.id)"></ion-icon>
       </ion-col>
     </ion-row>
   </div>

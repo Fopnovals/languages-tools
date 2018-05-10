@@ -21,18 +21,33 @@
              *ngFor="let row of displayLearningWords">
       <ion-col col-5>{{row[0]}}</ion-col>
       <ion-col col-2
-               text-center>-</ion-col>
+               text-center>-
+      </ion-col>
       <ion-col col-5
-               text-right>{{row[1]}}</ion-col>
+               text-right>{{row[1]}}
+      </ion-col>
     </ion-row>
     <div class="button-box">
       <div class="modal-word"
            [ngClass]="{'display': showModal}">
         <span>{{displayModalWord}}</span>
       </div>
-      <button ion-button
-              (click)="start()">Start
-      </button>
     </div>
   </ion-list>
 </ion-content>
+
+<ion-fab left
+         bottom
+         *ngIf="!learningStarted">
+  <button ion-fab (click)="start()">
+    <ion-icon name="play"></ion-icon>
+  </button>
+</ion-fab>
+
+<ion-fab right
+         bottom
+         *ngIf="learningStarted">
+  <button ion-fab color="danger" (click)="stop()">
+    <ion-icon name="square"></ion-icon>
+  </button>
+</ion-fab>

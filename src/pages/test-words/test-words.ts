@@ -5,6 +5,7 @@ import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {TestWordsService} from "../../_services/test.words.service";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
+import {SharedService} from "../../_services/shared.service";
 
 const recognitionOptions = {
   matches: 5
@@ -26,11 +27,13 @@ export class TestWordsPage {
   private module = [];
   private sortedEnglishWords = [];
   private sortedRussianWords = [];
+  public testStarted = false;
 
   constructor(public navCtrl: NavController,
               private wordsService: TestWordsService,
               private sqlStorage: SqlStorageProvider,
               private tts: TextToSpeech,
+              private sharedService: SharedService,
               private speechRecognition: SpeechRecognition,
               public navParams: NavParams) {
   }
@@ -40,6 +43,8 @@ export class TestWordsPage {
   }
 
   start() {
+    this.sharedService.changeFabAddWordsState(false);
+    this.testStarted = true;
     this.testsSettings = this.wordsService.getSettings();
     this.sqlStorage.getModule(this.testsSettings.moduleName)
       .then((res) => {
@@ -294,5 +299,11 @@ export class TestWordsPage {
         // }
       }
     });
+  }
+
+  stop() {
+    console.log('STOP');
+    this.sharedService.changeFabAddWordsState(true);
+    this.testStarted = false;
   }
 }

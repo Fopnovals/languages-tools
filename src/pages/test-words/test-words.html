@@ -31,9 +31,22 @@
            [ngClass]="{'display': showModal}">
         <span>{{displayModalWord}}</span>
       </div>
-      <button ion-button
-              (click)="start()">Start
-      </button>
     </div>
   </ion-list>
 </ion-content>
+
+<ion-fab left
+         bottom
+         *ngIf="!testStarted">
+  <button ion-fab (click)="start()">
+    <ion-icon name="play"></ion-icon>
+  </button>
+</ion-fab>
+
+<ion-fab right
+         bottom
+         *ngIf="testStarted">
+  <button ion-fab color="danger" (click)="stop()">
+    <ion-icon name="square"></ion-icon>
+  </button>
+</ion-fab>

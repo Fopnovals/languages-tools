@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController} from 'ionic-angular';
 import {TestWordsService} from "../../_services/test.words.service";
 import * as constants from "../../shared/constants/constants";
 import {Store} from "@ngrx/store";
@@ -14,6 +14,7 @@ import {TestSettingsModel} from "../../_models/settings.model";
 })
 export class TestSettingsPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
   public languages = constants.languages;
   public modules = [];
   private modules$: Observable<any>;
@@ -26,19 +27,21 @@ export class TestSettingsPage {
     this.testSettings = this.testWordsService.getSettings();
     this.modules$ = this.store.select('modules');
     this.modules$.subscribe((data) => {
-      if(data && data.modulesNames) {
+      if (data && data.modulesNames) {
         this.modules = data.modulesNames;
       }
     });
   }
 
+  ionViewDidLoad() {
+    this.navBar.backButtonClick = (e:UIEvent)=>{
+      this.navCtrl.pop();
+    }
+  }
+
   saveSettings() {
     this.testWordsService.setSettings(this.testSettings);
-    if(this.navCtrl.getPrevious()) {
-      this.navCtrl.pop();
-    } else {
-      this.navCtrl.setRoot('HomePage');
-    }
+    this.navCtrl.pop();
   }
 
   compareFn(e1, e2): boolean {

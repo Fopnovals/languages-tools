@@ -1,32 +1,36 @@
 import {Injectable} from "@angular/core";
 import {Insomnia} from "@ionic-native/insomnia";
 import {Storage} from "@ionic/storage";
+import {Store} from "@ngrx/store";
+import * as fromRoot from '../shared/redux/reducers';
+import {SetAddWordsFabStateAction} from "../shared/redux/actions/fabstates.actions";
 
 @Injectable()
 export class SharedService {
 
-  private canSleep = false;
-
   constructor(private insomnia: Insomnia,
+              private store: Store<fromRoot.State>,
               private storage: Storage) {
+  }
+
+  changeFabAddWordsState(newState) {
+    this.store.dispatch(new SetAddWordsFabStateAction(newState));
+  }
+
+  defineCanSleep() {
     this.storage.get('canSleep').then((res) => {
-      if(res || res === 'false') {
-        this.canSleep = res;
+      let canSleep;
+      if (res == undefined) {
+        canSleep = false;
+        this.storage.set('canSleep', false);
+      } else {
+        canSleep = res;
       }
+      this.allowSleep(canSleep);
     });
   }
 
-  getCanSleepState() {
-    return this.storage.get('canSleep');
-  }
-
-  allowSleep(data?) {
-    if(data || data === 'false') {
-      this.storage.set('canSleep', data);
-    } else {
-      data = this.canSleep;
-    }
-
+  allowSleep(data) {
     if(data) {
       this.insomnia.allowSleepAgain()
         .then(

@@ -8,6 +8,7 @@ import {Store} from "@ngrx/store";
 import * as fromRoot from '../../shared/redux/reducers';
 import {Observable} from "rxjs/Observable";
 import {TestWordsService} from "../../_services/test.words.service";
+import {SharedService} from "../../_services/shared.service";
 
 const recognitionOptions = {
   matches: 5
@@ -39,6 +40,7 @@ export class AddWordsPage {
               private sqlStorage: SqlStorageProvider,
               private translateService: TranslateService,
               private modalCtrl: ModalController,
+              private sharedService: SharedService,
               private wordsService: TestWordsService,
               private tts: TextToSpeech,
               private store: Store<fromRoot.State>,
@@ -59,6 +61,8 @@ export class AddWordsPage {
         }
       }
     });
+
+    this.sharedService.changeFabAddWordsState(false);
   }
 
   ionViewDidLoad() {
@@ -195,4 +199,8 @@ export class AddWordsPage {
     });
   }
 
+  ionViewWillUnload() {
+    console.log('ionViewWillUnload');
+    this.sharedService.changeFabAddWordsState(true);
+  }
 }
