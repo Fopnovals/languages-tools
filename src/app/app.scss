@@ -21,9 +21,14 @@
     margin: 0 10px;
   }
 }
-ion-title {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+//ion-title {
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//  bottom: 0;
+//}
+.toolbar-content-md {
+  position: absolute;
+  left: 70px;
+  right: 70px;
 }
