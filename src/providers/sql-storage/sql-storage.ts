@@ -7,6 +7,7 @@ import * as fromRoot from '../../_shared/redux/reducers';
 import {SetModulesNamesAction} from "../../_shared/redux/actions/modules.actions";
 import * as constants from '../../_shared/constants/constants';
 import {ModuleModel} from "../../_models/others.model";
+import {RowDbModel} from "../../_models/row.db.model";
 
 @Injectable()
 export class SqlStorageProvider {
@@ -165,29 +166,23 @@ export class SqlStorageProvider {
   }
 
   setACoupleWords(first, second, module) {
-    first['repeatedCounter'] = 0;
-    first['moduleName'] = module.name;
-    first['rightAnswersCounter'] = 0;
-    first['wrongAnswersCounter'] = 0;
-    first['commandWordState'] = 0;
-    first['moduleCreated'] = module.moduleCreated;
-    first['translateWord'] = second.word;
-    first['translateLanguage'] = this.searchTranslateLanguage(first['language']);
-    second['repeatedCounter'] = 0;
-    second['moduleName'] = module.name;
-    second['rightAnswersCounter'] = 0;
-    second['wrongAnswersCounter'] = 0;
-    second['commandWordState'] = 0;
-    second['moduleCreated'] = module.moduleCreated;
-    second['translateWord'] = first.word;
-    second['translateLanguage'] = this.searchTranslateLanguage(second['language']);
+    let row: RowDbModel = {
+      repeatedCounter: 0,
+      moduleName: module.name,
+      rightAnswersCounter: 0,
+      wrongAnswersCounter: 0,
+      commandWordState: 0,
+      moduleCreated: module.moduleCreated,
+      word: first.word,
+      language: first.language,
+      translateWord: second.word,
+      translateLanguage: second.language
+    };
+
     return new Promise((resolve, reject) => {
-      this.set(first).then((res) => {
-        this.set(second).then((res2) => {
-          console.log('The pair of words have been written');
-        }, (err) => {
-          reject(err);
-        });
+      this.set(row).then((res) => {
+        row.id = res.insertId;
+        resolve(row);
       }, (err) => {
         reject(err);
       })

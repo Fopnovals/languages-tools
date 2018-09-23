@@ -134,8 +134,7 @@ export class ModulePage {
       {
         module: this.module,
         words: this.words
-      }
-      );
+      });
   }
 
 }

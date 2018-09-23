@@ -16,13 +16,13 @@
 
 </ion-menu>
 
-<ion-fab right
-         bottom
-         *ngIf="displayAddWordsFab">
-  <button ion-fab (click)="goToPage('AddWordsPage')">
-    <ion-icon name="add"></ion-icon>
-  </button>
-</ion-fab>
+<!--<ion-fab right-->
+         <!--bottom-->
+         <!--*ngIf="displayAddWordsFab">-->
+  <!--<button ion-fab (click)="goToPage('AddWordsPage')">-->
+    <!--<ion-icon name="add"></ion-icon>-->
+  <!--</button>-->
+<!--</ion-fab>-->
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

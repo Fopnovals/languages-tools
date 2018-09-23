@@ -1,15 +1,15 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
-import {SpeechRecognition} from "@ionic-native/speech-recognition";
-import {TextToSpeech} from "@ionic-native/text-to-speech";
+import {IonicPage, ModalController, NavController, NavParams, ViewController} from "ionic-angular";
 import {TranslateService} from "../../_services/translate.service";
-import {Store} from "@ngrx/store";
-import * as fromRoot from '../../_shared/redux/reducers';
-import {Observable} from "rxjs/Observable";
-import {TestWordsService} from "../../_services/test.words.service";
-import {SharedService} from "../../_services/shared.service";
 import {ModuleModel} from "../../_models/others.model";
+import {Observable} from "rxjs/Observable";
+import {Store} from "@ngrx/store";
+import {TestWordsService} from "../../_services/test.words.service";
+import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
+import {TextToSpeech} from "@ionic-native/text-to-speech";
+import {SharedService} from "../../_services/shared.service";
+import * as fromRoot from "../../_shared/redux/reducers";
+import {SpeechRecognition} from "@ionic-native/speech-recognition";
 
 const recognitionOptions = {
   matches: 5
@@ -17,10 +17,10 @@ const recognitionOptions = {
 
 @IonicPage()
 @Component({
-  selector: 'page-add-words',
-  templateUrl: 'add-words.html',
+  selector: 'add-words',
+  templateUrl: 'add-words.html'
 })
-export class AddWordsPage {
+export class AddWordsComponent {
 
   @ViewChild('firstTextarea') firstTextarea;
   @ViewChild('secondTextarea') secondTextarea;
@@ -36,29 +36,33 @@ export class AddWordsPage {
   public currentModule: ModuleModel;
   public modules = [];
   private modules$: Observable<any>;
+  public module: ModuleModel = new ModuleModel();
 
   constructor(public navCtrl: NavController,
               private sqlStorage: SqlStorageProvider,
               private translateService: TranslateService,
               private modalCtrl: ModalController,
+              private viewCtrl: ViewController,
               private sharedService: SharedService,
               private wordsService: TestWordsService,
               private tts: TextToSpeech,
               private store: Store<fromRoot.State>,
               private speechRecognition: SpeechRecognition,
               public navParams: NavParams) {
-    this.modules$ = this.store.select('modules');
-    this.modules$.subscribe((data) => {
-      if (data && data.modules) {
-        this.modules = data.modules;
-        this.currentModule = this.wordsService.getCurrentModule();
-      }
-    });
+    // this.modules$ = this.store.select('modules');
+    // this.modules$.subscribe((data) => {
+    //   if (data && data.modules) {
+    //     this.modules = data.modules;
+    //     this.currentModule = this.wordsService.getCurrentModule();
+    //   }
+    // });
 
+    this.module = this.navParams.get('module');
     this.sharedService.changeFabAddWordsState(false);
+    this.initSpeech();
   }
 
-  ionViewDidLoad() {
+  initSpeech() {
     this.speechRecognition.hasPermission()
       .then((hasPermission: boolean) => {
         if (!hasPermission) {
@@ -174,30 +178,29 @@ export class AddWordsPage {
         word: this.secondWord,
         language: 'ru-RU'
       };
-    this.wordsService.setCurrentModule(this.currentModule);
-    this.sqlStorage.setACoupleWords(first, second, this.currentModule)
+    // this.wordsService.setCurrentModule(this.currentModule);
+    this.sqlStorage.setACoupleWords(first, second, this.module)
       .then((res) => {
         if (res) {
-          this.firstWord = '';
-          this.secondWord = '';
+          this.viewCtrl.dismiss({row: res});
         }
-      }, (err) => {
-        console.log(err);
       })
       .catch((err) => {
         console.log(err);
+        this.viewCtrl.dismiss();
       });
   }
 
-  getFromDB() {
-    this.sqlStorage.getAll().then((data) => {
-      console.log('tttttttttttt');
-      console.log(data);
-    });
-  }
+  // getFromDB() {
+  //   this.sqlStorage.getAll().then((data) => {
+  //     console.log('tttttttttttt');
+  //     console.log(data);
+  //   });
+  // }
+  //
+  // ionViewWillUnload() {
+  //   console.log('ionViewWillUnload');
+  //   this.sharedService.changeFabAddWordsState(true);
+  // }
 
-  ionViewWillUnload() {
-    console.log('ionViewWillUnload');
-    this.sharedService.changeFabAddWordsState(true);
-  }
 }

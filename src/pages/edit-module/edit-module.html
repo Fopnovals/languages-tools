@@ -28,7 +28,7 @@
   </ion-row>
 
   <ion-list>
-    <ion-card *ngFor="let pair of words; let i = index">
+    <ion-card *ngFor="let pair of words; let i = index" class="relative">
       <ion-card-content>
         <ion-item class="border-bottom">
           <ion-input
@@ -45,8 +45,30 @@
             type="text"
           ></ion-input>
         </ion-item>
+        <button
+          ion-button
+          clear
+          icon-only
+          class="delete-row"
+          (click)="deletePair(i)"
+        >
+          <ion-icon
+            color="danger"
+            name="close-circle"
+          ></ion-icon>
+        </button>
       </ion-card-content>
     </ion-card>
   </ion-list>
-
 </ion-content>
+
+<ion-footer>
+  <ion-fab
+    center
+    bottom
+  >
+    <button ion-fab (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-footer>
