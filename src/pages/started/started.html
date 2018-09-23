@@ -1,0 +1,65 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Get Started</ion-title>
+    <ion-buttons end *ngIf="showSkip">
+      <button
+        ion-button
+        (click)="goToLastSlide()"
+        color="primary"
+      >Skip
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content no-bounce>
+  <ion-slides #slider pager="true" dir="{{dir}}" (ionSlideWillChange)="onSlideChangeStart($event)">
+    <ion-slide *ngFor="let slide of slides">
+      <img [src]="slide.image" class="slide-image"/>
+      <h2 class="slide-title" [innerHTML]="slide.title"></h2>
+      <p [innerHTML]="slide.description" padding></p>
+    </ion-slide>
+    <ion-slide>
+      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image"/>
+      <h2 class="slide-title">Start using</h2>
+
+      <form (ngSubmit)="startApp()" name="userForm" #userForm="ngForm">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.firstName"
+            placeholder="Please type your first name"
+            required
+            name="firstName"
+            #firstName="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!firstName.valid && firstName.touched">This field is required</span>
+
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.lastName"
+            placeholder="Please type your last name"
+            required
+            name="lastName"
+            #lastName="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!lastName.valid && lastName.touched">This field is required</span>
+
+        <button
+          ion-button
+          icon-end
+          large
+          clear
+          [disabled]="!userForm.valid"
+        >
+          Continue
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </form>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

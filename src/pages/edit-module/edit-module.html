@@ -1,0 +1,52 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit module</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row *ngIf="module" class="border-bottom-bold">
+    <ion-col float-left>
+      <span>{{module.name}}</span>
+      <p>{{module.wordsCounter}} words</p>
+    </ion-col>
+
+    <ion-col float-right text-end>
+      <button
+        ion-button
+        small
+        (click)="editModule()"
+        icon-only>
+        <ion-icon
+          name="checkbox"
+        ></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+
+  <ion-list>
+    <ion-card *ngFor="let pair of words; let i = index">
+      <ion-card-content>
+        <ion-item class="border-bottom">
+          <ion-input
+            [(ngModel)]="pair.word"
+            [name]="'word' + i"
+            type="text"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item class="border-bottom">
+          <ion-input
+            [(ngModel)]="pair.translateWord"
+            [name]="'word' + i"
+            type="text"
+          ></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+</ion-content>
