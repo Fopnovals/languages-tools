@@ -1,37 +1,33 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
-import * as words from '../../_shared/constants/suggested.words';
-import * as constants from '../../_shared/constants/constants';
-import {ModuleModel} from "../../_models/others.model";
-import {Observable} from "rxjs/Observable";
-import * as fromRoot from "../../_shared/redux/reducers";
-import {Store} from "@ngrx/store";
-import {TestWordsService} from "../../_services/test.words.service";
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
-import {UserModel} from "../../_models/user.model";
+import {Observable} from "rxjs/Observable";
+import {Store} from "@ngrx/store";
+import * as fromRoot from '../../_shared/redux/reducers';
+import {ModuleModel} from "../../_models/others.model";
+import * as words from "../../_shared/constants/suggested.words";
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-edit-module',
+  templateUrl: 'my-modules.html',
 })
-export class HomePage {
+export class MyModulesPage {
 
-  public doughnutChartColors = constants.doughnutChartColors;
-  public doughnutChartOptions = constants.doughnutChartOptions;
-  data: [1, 17];
-  private suggestedModules = [];
-  public modules: ModuleModel[] = [];
+  public words = [];
+  public module: ModuleModel;
+  public modules = [];
   private modules$: Observable<any>;
+  private suggestedModules = [];
   public allSuggestedModulesSelectedFlag = false;
   public hasSelectedSuggestedModulesFlag = false;
-  public user: UserModel = new UserModel();
-  private user$: Observable<any>;
 
-  constructor(public navCtrl: NavController,
-              private sqlStorage: SqlStorageProvider,
-              private testWordsService: TestWordsService,
-              private store: Store<fromRoot.State>
+  constructor(
+    public navCtrl: NavController,
+    private sqlStorage: SqlStorageProvider,
+    private store: Store<fromRoot.State>,
+    private modalCtrl: ModalController,
+    public navParams: NavParams
   ) {
     this.initSuggestedModel();
 
@@ -39,13 +35,6 @@ export class HomePage {
     this.modules$.subscribe((data) => {
       if (data && data.modules) {
         this.modules = data.modules;
-      }
-    });
-
-    this.user$ = this.store.select('user');
-    this.user$.subscribe((user) => {
-      if (user) {
-        this.user = user;
       }
     });
   }
@@ -69,6 +58,50 @@ export class HomePage {
       }
     });
   }
+
+  deleteWord(row) {
+    let associateRow = this.words.filter((el) => {
+      return row.translateWordId === el.id;
+    })[0];
+    let params = {
+      text: 'Are you shure you want to remove words ' + row.word + ' and ' + associateRow.word + '?'
+    };
+    let modal = this.modalCtrl.create('ModalSimpleComponent', params);
+    modal.onDidDismiss(data => {
+      if (data && data.accept) {
+        this.deletePair(row.id, associateRow.id);
+      }
+    });
+    modal.present();
+  }
+
+  deletePair(firstId, secondId) {
+    for (let i = 0; i < this.words.length; i++) {
+      if (firstId === this.words[i].id || secondId === this.words[i].id) {
+        this.words.splice(i, 1);
+        i--;
+      }
+    }
+
+    this.sqlStorage.removeWord(firstId).then((r) => {
+      console.log(r);
+    }, err => {
+      console.log(err);
+    })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    this.sqlStorage.removeWord(secondId).then((r) => {
+      console.log(r);
+    }, err => {
+      console.log(err);
+    })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
 
   checkIfHasSelectedSuggestedModules() {
     let hasSelectedSuggestedModulesFlag = false;
@@ -113,8 +146,8 @@ export class HomePage {
       .catch(err => console.log(err));
   }
 
-  goToMyModules() {
-    this.navCtrl.setRoot('MyModulesPage');
+  goToModule(module) {
+    this.navCtrl.push('ModulePage',
+      {module: module});
   }
-
 }

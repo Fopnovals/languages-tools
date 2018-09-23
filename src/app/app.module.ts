@@ -15,10 +15,12 @@ import {TranslateService} from "../_services/translate.service";
 import {TestWordsService} from "../_services/test.words.service";
 import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {reducers} from "../shared/redux/reducers";
+import {reducers} from "../_shared/redux/reducers";
 import {SharedService} from "../_services/shared.service";
 import {Insomnia} from "@ionic-native/insomnia";
 import {IonicStorageModule} from "@ionic/storage";
+import {AuthService} from "../_services/auth.service";
+import {UserService} from "../_services/user.service";
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import {IonicStorageModule} from "@ionic/storage";
     SqlStorageProvider,
     TranslateService,
     TestWordsService,
+    AuthService,
+    UserService,
     SharedService,
     TextToSpeech,
     SplashScreen,

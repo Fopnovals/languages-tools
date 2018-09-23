@@ -1,22 +1,25 @@
 import {Injectable} from "@angular/core";
 import {LanguageModel, LearningSettingsModel, TestSettingsModel} from "../_models/settings.model";
-import * as constants from '../shared/constants/constants';
+import * as constants from '../_shared/constants/constants';
+import {ModuleModel} from "../_models/others.model";
 
 @Injectable()
 export class TestWordsService {
 
   private testSettings: TestSettingsModel;
   private learningSettings: LearningSettingsModel;
-  private currentModuleName = '';
+  private currentModule: ModuleModel = this.getLocalStorage('currentModule') || {
+    name: 'Default',
+    moduleCreated: new Date().toUTCString()
+  };
 
   constructor() {
     let testSettings = this.getLocalStorage('testSettings');
     let learningSettings = this.getLocalStorage('learningSettings');
-    let currentModuleName = this.getLocalStorage('currentModuleName');
 
     if (!testSettings) {
       this.testSettings = {
-        moduleName: 'Default',
+        module: this.currentModule,
         testLanguage: constants['languages'][0],
         askAgain: false,
         giveAnswer: true,
@@ -31,7 +34,7 @@ export class TestWordsService {
     if (!learningSettings) {
       this.learningSettings = {
         firstLanguage: constants['languages'][0],
-        moduleName: 'Default',
+        module: this.currentModule,
         sort: 'as is',
         pauseBetweenWords: 1,
         pauseBetweenACouple: 3,
@@ -41,12 +44,6 @@ export class TestWordsService {
       }
     } else {
       this.learningSettings = learningSettings;
-    }
-
-    if(!this.currentModuleName) {
-      this.setCurrentModuleName('Default');
-    } else {
-      this.currentModuleName = currentModuleName;
     }
   }
 
@@ -60,7 +57,7 @@ export class TestWordsService {
 
   setLearningSettings(params) {
     this.learningSettings.firstLanguage = params.firstLanguage;
-    this.learningSettings.moduleName = params.moduleName;
+    this.learningSettings.module = params.module;
     this.learningSettings.sort = params.sort;
     this.learningSettings.pauseBetweenWords = params.pauseBetweenWords;
     this.learningSettings.pauseBetweenACouple = params.pauseBetweenACouple;
@@ -75,7 +72,9 @@ export class TestWordsService {
   }
 
   setSettings(params) {
-    this.testSettings.moduleName = params.moduleName;
+    console.log('mmmmm');
+    console.log(params);
+    this.testSettings.module = params.module;
     this.testSettings.testLanguage = params.testLanguage;
     this.testSettings.askAgain = params.askAgain;
     this.testSettings.numbersOfWordsForTest = params.numbersOfWordsForTest;
@@ -88,12 +87,12 @@ export class TestWordsService {
     return this.testSettings;
   }
 
-  setCurrentModuleName(name) {
-    this.currentModuleName = name;
-    this.setLocalStorage('currentModuleName', name);
+  setCurrentModule(module) {
+    this.currentModule = module;
+    this.setLocalStorage('currentModule', module);
   }
 
-  getCurrentModuleName() {
-    return this.currentModuleName;
+  getCurrentModule() {
+    return this.currentModule;
   }
 }

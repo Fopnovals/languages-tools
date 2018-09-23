@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { EditModulePage } from './edit-module';
+import { MyModulesPage } from './my-modules';
 
 @NgModule({
   declarations: [
-    EditModulePage,
+    MyModulesPage,
   ],
   imports: [
-    IonicPageModule.forChild(EditModulePage),
+    IonicPageModule.forChild(MyModulesPage),
   ],
 })
 export class EditModulePageModule {}

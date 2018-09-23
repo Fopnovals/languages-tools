@@ -1,9 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController} from 'ionic-angular';
 import {TestWordsService} from "../../_services/test.words.service";
-import * as constants from "../../shared/constants/constants";
+import * as constants from "../../_shared/constants/constants";
 import {Store} from "@ngrx/store";
-import * as fromRoot from '../../shared/redux/reducers';
+import * as fromRoot from '../../_shared/redux/reducers';
 import {Observable} from "rxjs/Observable";
 import {TestSettingsModel} from "../../_models/settings.model";
 
@@ -27,8 +27,8 @@ export class TestSettingsPage {
     this.testSettings = this.testWordsService.getSettings();
     this.modules$ = this.store.select('modules');
     this.modules$.subscribe((data) => {
-      if (data && data.modulesNames) {
-        this.modules = data.modulesNames;
+      if (data && data.modules) {
+        this.modules = data.modules;
       }
     });
   }

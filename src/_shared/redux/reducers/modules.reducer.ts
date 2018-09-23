@@ -1,18 +1,19 @@
 import {ModulesActions} from "../actions/modules.actions";
+import {ModuleModel} from "../../../_models/others.model";
 
 export interface  ModulesState {
-  modulesNames: Array<string>
+  modules: ModuleModel[]
 }
 
 export const INITIAL_STATE: ModulesState = {
-  modulesNames: []
+  modules: []
 };
 
 export function modulesReducer(state = INITIAL_STATE, action: any) {
 
   switch (action.type) {
-    case ModulesActions.SET_MODULES_NAMES:
-      return Object.assign({}, state, {modulesNames: action['payload']});
+    case ModulesActions.SET_MODULES:
+      return Object.assign({}, state, {modules: action['payload']});
 
     default:
       return state;

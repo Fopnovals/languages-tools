@@ -46,8 +46,11 @@ export class TestWordsPage {
     this.sharedService.changeFabAddWordsState(false);
     this.testStarted = true;
     this.testsSettings = this.wordsService.getSettings();
-    this.sqlStorage.getModule(this.testsSettings.moduleName)
+    console.log(this.testsSettings);
+    this.sqlStorage.getModule(this.testsSettings.module.name)
       .then((res) => {
+        console.log('iiiii');
+        console.log(res);
         this.module = res;
         this.sortByLanguage();
         this.checkAndSortBySortSettings();
@@ -132,9 +135,9 @@ export class TestWordsPage {
   }
 
   test() {
-    var counter = 0;
+    let counter = 0;
     this.displayTestsWords = [];
-    var that = this;
+    let that = this;
     this.showModal = true;
 
     goSpeak();

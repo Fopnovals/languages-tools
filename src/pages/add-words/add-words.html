@@ -18,10 +18,10 @@
   </h3>
   <ion-item *ngIf="!showInputNewModuleBox">
     <ion-label>Choose exists module</ion-label>
-    <ion-select [(ngModel)]="currentModuleName"
+    <ion-select [(ngModel)]="currentModule"
                 name="module"
                 placeholder="Select">
-      <ion-option *ngFor="let module of modules" [value]="module">{{module}}</ion-option>
+      <ion-option *ngFor="let module of modules" [value]="module">{{module.name}}</ion-option>
     </ion-select>
   </ion-item>
 

@@ -1,8 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {Store} from "@ngrx/store";
-import * as fromRoot from '../../shared/redux/reducers';
-import * as constants from "../../shared/constants/constants";
+import * as fromRoot from '../../_shared/redux/reducers';
+import * as constants from "../../_shared/constants/constants";
 import {Observable} from "rxjs/Observable";
 import {LearningSettingsModel} from "../../_models/settings.model";
 import {TestWordsService} from "../../_services/test.words.service";
@@ -16,7 +16,6 @@ export class LearningSettingsPage {
 
   @ViewChild(Navbar) navBar: Navbar;
   public languages = constants.languages;
-  public pauseBetweenWordsList = constants.pauseBetweenWordsList;
   public modules = [];
   private modules$: Observable<any>;
   private learningSettings: LearningSettingsModel;
@@ -28,8 +27,8 @@ export class LearningSettingsPage {
     this.learningSettings = this.testWordsService.getLearningSettings();
     this.modules$ = this.store.select('modules');
     this.modules$.subscribe((data) => {
-      if (data && data.modulesNames) {
-        this.modules = data.modulesNames;
+      if (data && data.modules) {
+        this.modules = data.modules;
       }
     });
   }

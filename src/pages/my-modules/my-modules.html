@@ -1,30 +1,22 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title text-center>Home</ion-title>
-  </ion-navbar>
+    <ion-title text-center>My modules</ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item>
-    <h4>Hello {{user.firstName}} {{user.lastName}}!</h4>
-  </ion-item>
-
-  <div *ngIf="modules.length">
+<ion-content>
+  <div *ngIf="!modules.length">
     <ion-card class="wrap-words">
       <ion-card-content>
-        <h4>Create your module or edit chose one on
-          <strong (click)="goToMyModules()">"My modules page"</strong>
-        </h4>
+        <h4>Currently you don't have any modules</h4>
+        <h3>Create my first module</h3>
       </ion-card-content>
     </ion-card>
-  </div>
 
-  <ion-list *ngIf="!modules.length">
-
-    <h5>You can choose from suggested modules for add to your database</h5>
+    <h5 padding-horizontal>You can choose from suggested modules for add to your database</h5>
 
     <ion-item>
       <ion-label>Choose ALL</ion-label>
@@ -56,27 +48,25 @@
       <button
         ion-button
         (click)="addSuggested()"
-      >{{hasSelectedSuggestedModulesFlag ? 'ADD' : 'SKIP'}}
+      >ADD
       </button>
     </ion-buttons>
-  </ion-list>
-
-  <div *ngIf="modules.length">
-    <h3>My progress</h3>
-
-    <div class="chart-box">
-      <p class="chart-title">Chart name</p>
-      <div class="chart-wrapper">
-        <!--<span class="chart-badge" [ngStyle]="{'backgroundColor': badgeColours[0]}">12</span>-->
-        <canvas
-          baseChart
-          [colors]="doughnutChartColors"
-          [data]="[4,9,8]"
-          [options]="doughnutChartOptions"
-          chartType="doughnut"
-        ></canvas>
-      </div>
-    </div>
   </div>
 
+  <ion-list *ngIf="modules.length">
+    <ion-item
+      padding-horizontal
+      class="vertical-center"
+      tappable
+      (click)="goToModule(module)"
+      *ngFor="let module of modules; let i = index"
+    >
+      <ion-avatar float-left class="left-avatar">{{i}}</ion-avatar>
+      <div>
+        <span>{{module.name}}</span>
+        <p>Created {{module.moduleCreated | date}}</p>
+        <p>{{module.wordsCounter}} words</p>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-content>

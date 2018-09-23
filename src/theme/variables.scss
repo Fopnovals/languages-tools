@@ -87,36 +87,36 @@ $colors: (
 @import "roboto";
 @import "noto-sans";
 
-ion-content {
-  background: url("../assets/imgs/bg.jpg") ;
-  background-size: cover;
-  color: white!important;
-}
-div.toolbar-background {
-  background: linear-gradient(to bottom, #0883fe, #43515f) ;
-}
-ion-menu {
-  .item {
-    background-color: transparent;
-    color: white;
-  }
-  .scroll-content {
-    background: url("../assets/imgs/bg-menu-2.png") center center;
-    background-size: cover;
-  }
-}
-.bar-button {
-  color: white!important;
-}
-ion-header {
-  .toolbar-title {
-    color: white;
-  }
-}
-.fab {
-  background-color: #488aff!important;
-}
-.ion-ios-mic, .ion-ios-megaphone, .ion-ios-swap:before {
-  color: white;
-  font-size: 20px;
-}
+//ion-content {
+//  background: url("../assets/imgs/bg.jpg") ;
+//  background-size: cover;
+//  color: white!important;
+//}
+//div.toolbar-background {
+//  background: linear-gradient(to bottom, #0883fe, #43515f) ;
+//}
+//ion-menu {
+//  .item {
+//    background-color: transparent;
+//    color: white;
+//  }
+//  .scroll-content {
+//    background: url("../assets/imgs/bg-menu-2.png") center center;
+//    background-size: cover;
+//  }
+//}
+//.bar-button {
+//  color: white!important;
+//}
+//ion-header {
+//  .toolbar-title {
+//    color: white;
+//  }
+//}
+//.fab {
+//  background-color: #488aff!important;
+//}
+//.ion-ios-mic, .ion-ios-megaphone, .ion-ios-swap:before {
+//  color: white;
+//  font-size: 20px;
+//}

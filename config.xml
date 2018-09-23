@@ -3,7 +3,7 @@
     <name>languages-tools</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://192.168.1.6:8100" />
+    <content original-src="index.html" src="http://192.168.1.5:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -92,6 +92,8 @@
     <allow-navigation href="http://192.168.16.20:8100" />
     <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
     <allow-navigation href="http://192.168.1.6:8100" sessionid="cdb0be4e" />
+    <allow-navigation href="http://192.168.14.105:8100" sessionid="728d213d" />
+    <allow-navigation href="http://192.168.1.5:8100" sessionid="d2ef0e81" />
     <engine name="ios" spec="4.5.4" />
     <engine name="android" spec="^7.0.0" />
 </widget>

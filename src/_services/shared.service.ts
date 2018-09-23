@@ -2,8 +2,8 @@ import {Injectable} from "@angular/core";
 import {Insomnia} from "@ionic-native/insomnia";
 import {Storage} from "@ionic/storage";
 import {Store} from "@ngrx/store";
-import * as fromRoot from '../shared/redux/reducers';
-import {SetAddWordsFabStateAction} from "../shared/redux/actions/fabstates.actions";
+import * as fromRoot from '../_shared/redux/reducers';
+import {SetAddWordsFabStateAction} from "../_shared/redux/actions/fabstates.actions";
 
 @Injectable()
 export class SharedService {

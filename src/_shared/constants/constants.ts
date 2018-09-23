@@ -1,3 +1,5 @@
+import {ModuleModel} from "../../_models/others.model";
+
 export const languages = [
   {
     name: 'Mixed',
@@ -32,4 +34,20 @@ export const chooseNumbersOfWordsForTest = [
 
 export const pauseBetweenWordsList = [
   0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5
+];
+
+export const doughnutChartOptions: any = {
+  responsive: true,
+  cutoutPercentage: 50,
+  legend: false,
+  circumference: 2 * Math.PI,
+  responsiveAnimationDuration: 800,
+  animation: {}
+};
+
+export const doughnutChartColors = [
+  {
+    backgroundColor: ['#bbe172', '#ff5a37', 'blue'],
+    pointBorderColor: 'rgba(0,0,0,1)',
+  }
 ];

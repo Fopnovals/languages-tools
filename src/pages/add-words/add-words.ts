@@ -1,14 +1,15 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {TranslateService} from "../../_services/translate.service";
 import {Store} from "@ngrx/store";
-import * as fromRoot from '../../shared/redux/reducers';
+import * as fromRoot from '../../_shared/redux/reducers';
 import {Observable} from "rxjs/Observable";
 import {TestWordsService} from "../../_services/test.words.service";
 import {SharedService} from "../../_services/shared.service";
+import {ModuleModel} from "../../_models/others.model";
 
 const recognitionOptions = {
   matches: 5
@@ -32,7 +33,7 @@ export class AddWordsPage {
   public displayInput1 = false;
   public displayInput2 = false;
   public showInputNewModuleBox = false;
-  public currentModuleName: string;
+  public currentModule: ModuleModel;
   public modules = [];
   private modules$: Observable<any>;
 
@@ -48,17 +49,9 @@ export class AddWordsPage {
               public navParams: NavParams) {
     this.modules$ = this.store.select('modules');
     this.modules$.subscribe((data) => {
-      if (data && data.modulesNames) {
-        this.modules = data.modulesNames;
-        if (this.modules.indexOf('Default') === -1) {
-          this.modules.push('Default');
-        }
-        if(this.wordsService.getCurrentModuleName() === '') {
-          this.wordsService.setCurrentModuleName('Default');
-          this.currentModuleName = 'Default';
-        } else {
-          this.currentModuleName = this.wordsService.getCurrentModuleName();
-        }
+      if (data && data.modules) {
+        this.modules = data.modules;
+        this.currentModule = this.wordsService.getCurrentModule();
       }
     });
 
@@ -155,17 +148,21 @@ export class AddWordsPage {
   }
 
   addModule() {
-    this.showInputNewModuleBox = !this.showInputNewModuleBox;
-    if (this.modules.indexOf(this.currentModuleName) !== -1) {
-      let params = {
-        hideAcceptButton: true,
-        text: "You already have a module with some name. Please type an other name or add words to this module."
-      };
-      let modal = this.modalCtrl.create('ModalSimpleComponent', params);
-      modal.present();
-    } else {
-      this.modules.push(this.currentModuleName);
-    }
+    // this.showInputNewModuleBox = !this.showInputNewModuleBox;
+    // if (this.modules.indexOf(this.currentModule) !== -1) {
+    //   let params = {
+    //     hideAcceptButton: true,
+    //     text: "You already have a module with some name. Please type an other name or add words to this module."
+    //   };
+    //   let modal = this.modalCtrl.create('ModalSimpleComponent', params);
+    //   modal.present();
+    // } else {
+    //   const newModule = {
+    //     name: this.currentModule,
+    //     moduleCreated: new Date()
+    //   };
+    //   this.modules.push(newModule);
+    // }
   }
 
   saveWords() {
@@ -177,8 +174,8 @@ export class AddWordsPage {
         word: this.secondWord,
         language: 'ru-RU'
       };
-    this.wordsService.setCurrentModuleName(this.currentModuleName);
-    this.sqlStorage.setACoupleWords(first, second, this.currentModuleName)
+    this.wordsService.setCurrentModule(this.currentModule);
+    this.sqlStorage.setACoupleWords(first, second, this.currentModule)
       .then((res) => {
         if (res) {
           this.firstWord = '';
@@ -195,7 +192,7 @@ export class AddWordsPage {
   getFromDB() {
     this.sqlStorage.getAll().then((data) => {
       console.log('tttttttttttt');
-      console.dir(data);
+      console.log(data);
     });
   }
 

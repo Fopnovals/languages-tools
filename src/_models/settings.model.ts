@@ -1,5 +1,7 @@
+import {ModuleModel} from "./others.model";
+
 export class TestSettingsModel {
-  moduleName: any;
+  module: ModuleModel;
   testLanguage: LanguageModel;
   giveAnswer: boolean;
   askAgain: boolean;
@@ -16,7 +18,7 @@ export class LanguageModel {
 
 export class LearningSettingsModel {
   firstLanguage: LanguageModel;
-  moduleName: string;
+  module: ModuleModel;
   pauseBetweenWords: number;
   pauseBetweenACouple: number;
   repeatFirstWord: boolean;

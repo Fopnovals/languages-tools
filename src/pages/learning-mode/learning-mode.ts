@@ -39,7 +39,7 @@ export class LearningModePage {
     this.sharedService.changeFabAddWordsState(false);
     this.learningStarted = true;
     this.learningSettings = this.wordsService.getLearningSettings();
-    this.sqlStorage.getModule(this.learningSettings.moduleName)
+    this.sqlStorage.getModule(this.learningSettings.module)
       .then((res) => {
         this.module = res;
         this.sortByLanguage();
