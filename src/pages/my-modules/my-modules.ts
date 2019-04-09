@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {Observable} from "rxjs/Observable";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../_shared/redux/reducers';
 import {ModuleModel} from "../../_models/others.model";
 import * as words from "../../_shared/constants/suggested.words";
+import {EditModulePage} from "../edit-module/edit-module";
 
 @IonicPage()
 @Component({
@@ -27,6 +28,7 @@ export class MyModulesPage {
     private sqlStorage: SqlStorageProvider,
     private store: Store<fromRoot.State>,
     private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     public navParams: NavParams
   ) {
     this.initSuggestedModel();
@@ -147,7 +149,49 @@ export class MyModulesPage {
   }
 
   goToModule(module) {
+    if(!module.wordsCounter) {
+      this.navCtrl.push('EditModulePage',
+        {module: module});
+      return;
+    }
     this.navCtrl.push('ModulePage',
       {module: module});
+  }
+
+  addModule() {
+    let alert = this.alertCtrl.create({
+      title: 'Create module',
+      subTitle: 'Please type the module name',
+      inputs: [
+        {
+          name: 'moduleName',
+          placeholder: 'Module name',
+          type: 'text'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            this.saveNewModule(data)
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  saveNewModule(data) {
+    let module: ModuleModel = {
+      wordsCounter: 0,
+      name: data.moduleName,
+      moduleCreated: new Date().toUTCString()
+    };
+
+    this.modules.unshift(module);
   }
 }

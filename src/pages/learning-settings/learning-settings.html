@@ -22,15 +22,6 @@
       </ion-select>
     </ion-item>
 
-    <ion-item>
-      <ion-label>Learning module name</ion-label>
-      <ion-select [(ngModel)]="learningSettings.moduleName"
-                  name="moduleName"
-                  placeholder="Select">
-        <ion-option *ngFor="let module of modules" [value]="module">{{module}}</ion-option>
-      </ion-select>
-    </ion-item>
-
     <ion-item-divider>
       <ion-label>Pause between words</ion-label>
       <ion-badge color="secondary"

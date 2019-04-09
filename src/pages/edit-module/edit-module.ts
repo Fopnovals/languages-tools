@@ -29,12 +29,17 @@ export class EditModulePage {
   ) {
     this.module = this.navParams.get('module');
     this.words = this.navParams.get('words') || [];
+
     this.modules$ = this.store.select('modules');
     this.modules$.subscribe((data) => {
       if (data && data.modules) {
         this.modules = data.modules;
       }
     });
+
+    if(this.module && !this.module.wordsCounter) {
+      this.add();
+    }
   }
 
   add() {

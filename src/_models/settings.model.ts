@@ -18,7 +18,6 @@ export class LanguageModel {
 
 export class LearningSettingsModel {
   firstLanguage: LanguageModel;
-  module: ModuleModel;
   pauseBetweenWords: number;
   pauseBetweenACouple: number;
   repeatFirstWord: boolean;
