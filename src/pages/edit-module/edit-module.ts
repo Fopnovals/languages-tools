@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ModuleModel} from "../../_models/others.model";
 import {RowDbModel} from "../../_models/row.db.model";
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {Observable} from "rxjs/Observable";
 import {Store} from "@ngrx/store";
 import * as fromRoot from "../../_shared/redux/reducers";
@@ -24,7 +23,6 @@ export class EditModulePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private store: Store<fromRoot.State>,
-    private sqlStorage: SqlStorageProvider,
     private modalCtrl: ModalController
   ) {
     this.module = this.navParams.get('module');
@@ -70,7 +68,7 @@ export class EditModulePage {
 
   deletePair(index) {
     if(this.words[index]['id']) {
-      this.sqlStorage.removeWord(this.words[index]['id']);
+      // this.sqlStorage.removeWord(this.words[index]['id']);
     }
     this.words.splice(index, 1);
     this.changeWordsCounterInModules('decrement');

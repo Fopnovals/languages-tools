@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ModuleModel} from "../../_models/others.model";
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {LearningSettingsModel} from "../../_models/settings.model";
 import {TestWordsService} from "../../_services/test.words.service";
-import {Observable} from "rxjs/Observable";
 
 @IonicPage()
 @Component({
@@ -26,8 +24,7 @@ export class ModulePage {
     public navCtrl: NavController,
     private wordsService: TestWordsService,
     public navParams: NavParams,
-    private tts: TextToSpeech,
-    private sqlStorage: SqlStorageProvider,
+    private tts: TextToSpeech
   ) {
     this.learningSettings = this.wordsService.getLearningSettings();
     this.wordsService.learningSettings$.subscribe((settings: any) => {
@@ -44,14 +41,14 @@ export class ModulePage {
   }
 
   getWordsByModuleName() {
-    this.sqlStorage.getModule(this.module.name)
-      .then((res) => {
-        this.rowsFromDb = res;
-        this.sortByFirstLanguage();
-        this.sortAlphabetical();
-      }, (err) => {
-        console.log(err);
-      });
+    // this.sqlStorage.getModule(this.module.name)
+    //   .then((res) => {
+    //     this.rowsFromDb = res;
+    //     this.sortByFirstLanguage();
+    //     this.sortAlphabetical();
+    //   }, (err) => {
+    //     console.log(err);
+    //   });
   }
 
   sortByFirstLanguage() {

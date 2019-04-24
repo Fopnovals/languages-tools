@@ -12,6 +12,6 @@ export const startedSlides = [
   {
     title: 'Third slide',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'assets/img/ica-slidebox-img-3.png',
+    image: 'assets/imgs/registratiffon.png',
   }
 ];

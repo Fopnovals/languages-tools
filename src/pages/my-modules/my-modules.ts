@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {Observable} from "rxjs/Observable";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../_shared/redux/reducers';
@@ -25,7 +24,6 @@ export class MyModulesPage {
 
   constructor(
     public navCtrl: NavController,
-    private sqlStorage: SqlStorageProvider,
     private store: Store<fromRoot.State>,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
@@ -85,23 +83,23 @@ export class MyModulesPage {
       }
     }
 
-    this.sqlStorage.removeWord(firstId).then((r) => {
-      console.log(r);
-    }, err => {
-      console.log(err);
-    })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    this.sqlStorage.removeWord(secondId).then((r) => {
-      console.log(r);
-    }, err => {
-      console.log(err);
-    })
-      .catch((err) => {
-        console.log(err);
-      });
+    // this.sqlStorage.removeWord(firstId).then((r) => {
+    //   console.log(r);
+    // }, err => {
+    //   console.log(err);
+    // })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    //
+    // this.sqlStorage.removeWord(secondId).then((r) => {
+    //   console.log(r);
+    // }, err => {
+    //   console.log(err);
+    // })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
 
 
@@ -141,11 +139,11 @@ export class MyModulesPage {
       }
     });
 
-    this.sqlStorage.setWordsCollection(wordsArray)
-      .then(() => {
-        this.sqlStorage.getModules();
-      })
-      .catch(err => console.log(err));
+    // this.sqlStorage.setWordsCollection(wordsArray)
+    //   .then(() => {
+    //     this.sqlStorage.getModules();
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   goToModule(module) {

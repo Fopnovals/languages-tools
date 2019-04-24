@@ -5,6 +5,8 @@
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
+    "dev": "IONIC_ENV=dev ionic-app-scripts serve",
+    "prod": "IONIC_ENV=prod ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
@@ -35,7 +37,7 @@
     "chart": "^0.1.2",
     "chart.js": "^2.7.2",
     "cordova-android": "^7.0.0",
-    "cordova-ios": "4.5.4",
+    "cordova-ios": "4.5.5",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-insomnia": "^4.3.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
@@ -49,9 +51,11 @@
     "cordova-sqlite-storage-dependencies": "^1.2.0",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
+    "ios-sim": "^9.0.0-dev.4",
     "ng2-charts": "^1.6.0",
     "rxjs": "5.5.8",
     "sw-toolbox": "3.6.0",
+    "url-join": "^4.0.0",
     "zone.js": "0.8.20"
   },
   "devDependencies": {
@@ -74,8 +78,14 @@
       "cordova-sqlite-storage": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
+  },
+  "config": {
+    "ionic_copy": "./config/copy.config.js",
+    "ionic_sass": "./config/sass.config.js",
+    "ionic_optimization": "./config/optimization.config.js",
+    "ionic_webpack": "./config/webpack.config.js"
   }
 }

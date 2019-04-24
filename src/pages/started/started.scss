@@ -1,3 +1,14 @@
 page-started {
-
+  .registration-box {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .slide-image {
+    display: inline-block;
+    width: 100px;
+  }
+  .swiper-slide {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
 }

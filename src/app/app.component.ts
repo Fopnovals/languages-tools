@@ -3,13 +3,12 @@ import {Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import * as constants from '../pages/pages';
-import {SqlStorageProvider} from "../providers/sql-storage/sql-storage";
 import {SharedService} from "../_services/shared.service";
 import {Observable} from "rxjs/Observable";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../_shared/redux/reducers';
 import {AuthService} from "../_services/auth.service";
-import {SetUserAction} from "../_shared/redux/actions/user.actions";
+import {GetUserAction} from "../_shared/redux/actions/user.actions";
 
 @Component({
   templateUrl: 'app.html'
@@ -25,7 +24,6 @@ export class MyApp {
   constructor(public platform: Platform,
               public statusBar: StatusBar,
               private store: Store<fromRoot.State>,
-              private sqlStorage: SqlStorageProvider,
               private sharedService: SharedService,
               private authService: AuthService,
               public splashScreen: SplashScreen) {
@@ -44,21 +42,13 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.sharedService.defineCanSleep();
-      this.authService.isAutorized()
-        .then((user) => {
-          if(user) {
-            this.store.dispatch(new SetUserAction(user));
-            this.rootPage = 'HomePage';
-          } else {
-            this.rootPage = 'StartedPage';
-            this.sharedService.changeFabAddWordsState(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          this.rootPage = 'StartedPage';
-          this.sharedService.changeFabAddWordsState(false);
-        })
+      if(this.authService.getToken()) {
+        // this.store.dispatch(new GetUserAction());
+        this.rootPage = 'HomePage';
+      } else {
+        this.rootPage = 'StartedPage';
+        this.sharedService.changeFabAddWordsState(false);
+      }
     });
   }
 

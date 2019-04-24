@@ -23,10 +23,52 @@
       <p [innerHTML]="slide.description" padding></p>
     </ion-slide>
     <ion-slide>
-      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image"/>
-      <h2 class="slide-title">Start using</h2>
+      <div class="registration-box">
+        <img src="assets/imgs/registration.png" class="slide-image"/>
+      </div>
+      <ion-item>
+        <ion-label>{{loginMode ? "Registration" : "Log in"}}</ion-label>
+        <ion-toggle [(ngModel)]="loginMode"></ion-toggle>
+      </ion-item>
+      <h3>{{loginMode ? "Log in" : "Registration"}}</h3>
 
-      <form (ngSubmit)="startApp()" name="userForm" #userForm="ngForm">
+      <form *ngIf="loginMode" (ngSubmit)="login()" name="loginForm" #loginForm="ngForm">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.email"
+            placeholder="Please type your email"
+            required
+            name="email"
+            #email="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!email.valid && email.touched">This field is required</span>
+
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.password"
+            placeholder="Please type your password"
+            required
+            name="password"
+            #password="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!password.valid && password.touched">This field is required</span>
+
+        <button
+          class="mt-40"
+          ion-button
+          icon-end
+          large
+          clear
+          [disabled]="!loginForm.valid"
+        >
+          Continue
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </form>
+
+      <form *ngIf="!loginMode" (ngSubmit)="registration()" name="registrationForm" #registrationForm="ngForm">
         <ion-item>
           <ion-input
             [(ngModel)]="user.firstName"
@@ -49,12 +91,46 @@
         </ion-item>
         <span class="error-msg" *ngIf="!lastName.valid && lastName.touched">This field is required</span>
 
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.email"
+            placeholder="Please type your email"
+            required
+            name="reg_email"
+            #reg_email="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!reg_email.valid && reg_email.touched">This field is required</span>
+
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.password"
+            placeholder="Please type your password"
+            required
+            name="password"
+            #password="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!password.valid && password.touched">This field is required</span>
+
+        <ion-item>
+          <ion-input
+            [(ngModel)]="user.confirmation"
+            placeholder="Please password again"
+            required
+            name="confirmation"
+            #confirmation="ngModel"
+          ></ion-input>
+        </ion-item>
+        <span class="error-msg" *ngIf="!confirmation.valid && confirmation.touched">This field is required</span>
+
         <button
+          class="mt-40"
           ion-button
           icon-end
           large
           clear
-          [disabled]="!userForm.valid"
+          [disabled]="!registrationForm.valid"
         >
           Continue
           <ion-icon name="arrow-forward"></ion-icon>

@@ -8,8 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
 import {SQLite} from "@ionic-native/sqlite";
-import { SqlStorageProvider } from '../providers/sql-storage/sql-storage';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {TranslateService} from "../_services/translate.service";
 import {TestWordsService} from "../_services/test.words.service";
@@ -21,6 +20,7 @@ import {Insomnia} from "@ionic-native/insomnia";
 import {IonicStorageModule} from "@ionic/storage";
 import {AuthService} from "../_services/auth.service";
 import {UserService} from "../_services/user.service";
+import {TokenInterceptor} from "../_services/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -43,7 +43,6 @@ import {UserService} from "../_services/user.service";
     SpeechRecognition,
     SQLite,
     Insomnia,
-    SqlStorageProvider,
     TranslateService,
     TestWordsService,
     AuthService,
@@ -51,6 +50,11 @@ import {UserService} from "../_services/user.service";
     SharedService,
     TextToSpeech,
     SplashScreen,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

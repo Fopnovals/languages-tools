@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, Slides} from 'ionic-angular';
 import * as slides from '../../_shared/constants/slides';
 import {StartedSlidesModel} from "../../_models/slides.model";
 import {UserModel} from "../../_models/user.model";
+import {AuthService} from "../../_services/auth.service";
 import {UserService} from "../../_services/user.service";
 
 @IonicPage()
@@ -16,16 +17,30 @@ export class StartedPage {
   public slides: StartedSlidesModel[] = slides.startedSlides;
   public showSkip = true;
   public user: UserModel = new UserModel();
+  public loginMode = false
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private authService: AuthService,
     private userService: UserService
   ) {}
 
-  startApp() {
-    this.userService.setUser(this.user);
-    this.navCtrl.setRoot('HomePage');
+  login() {
+    this.authService.login(this.user)
+      .then(() => {
+        console.log('1111111');
+      })
+      .catch(err => err)
+  }
+
+  registration() {
+    this.authService.registration(this.user)
+      .then((data) => {
+        console.log('1111111');
+        console.log(data);
+      })
+      .catch(err => err)
   }
 
   onSlideChangeStart(slider) {

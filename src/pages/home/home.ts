@@ -7,7 +7,6 @@ import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../_shared/redux/reducers";
 import {Store} from "@ngrx/store";
 import {TestWordsService} from "../../_services/test.words.service";
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {UserModel} from "../../_models/user.model";
 
 @IonicPage()
@@ -28,10 +27,10 @@ export class HomePage {
   public user: UserModel = new UserModel();
   private user$: Observable<any>;
 
-  constructor(public navCtrl: NavController,
-              private sqlStorage: SqlStorageProvider,
-              private testWordsService: TestWordsService,
-              private store: Store<fromRoot.State>
+  constructor(
+    public navCtrl: NavController,
+    private testWordsService: TestWordsService,
+    private store: Store<fromRoot.State>
   ) {
     this.initSuggestedModel();
 
@@ -106,11 +105,11 @@ export class HomePage {
       }
     });
 
-    this.sqlStorage.setWordsCollection(wordsArray)
-      .then(() => {
-        this.sqlStorage.getModules();
-      })
-      .catch(err => console.log(err));
+    // this.sqlStorage.setWordsCollection(wordsArray)
+    //   .then(() => {
+    //     this.sqlStorage.getModules();
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   goToMyModules() {

@@ -5,7 +5,6 @@ import {ModuleModel} from "../../_models/others.model";
 import {Observable} from "rxjs/Observable";
 import {Store} from "@ngrx/store";
 import {TestWordsService} from "../../_services/test.words.service";
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {SharedService} from "../../_services/shared.service";
 import * as fromRoot from "../../_shared/redux/reducers";
@@ -39,7 +38,6 @@ export class AddWordsComponent {
   public module: ModuleModel = new ModuleModel();
 
   constructor(public navCtrl: NavController,
-              private sqlStorage: SqlStorageProvider,
               private translateService: TranslateService,
               private modalCtrl: ModalController,
               private viewCtrl: ViewController,
@@ -179,16 +177,16 @@ export class AddWordsComponent {
         language: 'ru-RU'
       };
     // this.wordsService.setCurrentModule(this.currentModule);
-    this.sqlStorage.setACoupleWords(first, second, this.module)
-      .then((res) => {
-        if (res) {
-          this.viewCtrl.dismiss({row: res});
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        this.viewCtrl.dismiss();
-      });
+    // this.sqlStorage.setACoupleWords(first, second, this.module)
+    //   .then((res) => {
+    //     if (res) {
+    //       this.viewCtrl.dismiss({row: res});
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     this.viewCtrl.dismiss();
+    //   });
   }
 
   // getFromDB() {

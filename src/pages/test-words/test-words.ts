@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {TestSettingsModel} from "../../_models/settings.model";
-import {SqlStorageProvider} from "../../providers/sql-storage/sql-storage";
 import {TextToSpeech} from "@ionic-native/text-to-speech";
 import {TestWordsService} from "../../_services/test.words.service";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
@@ -31,7 +30,6 @@ export class TestWordsPage {
 
   constructor(public navCtrl: NavController,
               private wordsService: TestWordsService,
-              private sqlStorage: SqlStorageProvider,
               private tts: TextToSpeech,
               private sharedService: SharedService,
               private speechRecognition: SpeechRecognition,
@@ -46,19 +44,19 @@ export class TestWordsPage {
     this.sharedService.changeFabAddWordsState(false);
     this.testStarted = true;
     this.testsSettings = this.wordsService.getSettings();
-    console.log(this.testsSettings);
-    this.sqlStorage.getModule(this.testsSettings.module.name)
-      .then((res) => {
-        console.log('iiiii');
-        console.log(res);
-        this.module = res;
-        this.sortByLanguage();
-        this.checkAndSortBySortSettings();
-        this.splitByLength();
-        this.test();
-      }, (err) => {
-        console.log(err);
-      });
+    // console.log(this.testsSettings);
+    // this.sqlStorage.getModule(this.testsSettings.module.name)
+    //   .then((res) => {
+    //     console.log('iiiii');
+    //     console.log(res);
+    //     this.module = res;
+    //     this.sortByLanguage();
+    //     this.checkAndSortBySortSettings();
+    //     this.splitByLength();
+    //     this.test();
+    //   }, (err) => {
+    //     console.log(err);
+    //   });
   }
 
   sortByLanguage() {
@@ -235,7 +233,7 @@ export class TestWordsPage {
           });
       }
 
-      this.sqlStorage.updateRowById(el);
+      // this.sqlStorage.updateRowById(el);
     });
   }
 
